@@ -10,9 +10,9 @@ Modern C++ Networking Library
 - botan for optional tls support
 
 ## Building
-- run `make all` to build debug + release
-- run `make all test` to build and execute tests
-- run `make scan-build` ro tun scan-build
+- Run `make all` to build debug + release
+- Run `make all test` to build and execute tests
+- Run `make scan-build` ro tun scan-build
 
 ## Integrate it into other projects
 - Add this repo as a Subproject or just clone it.
