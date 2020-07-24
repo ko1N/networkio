@@ -1,0 +1,20 @@
+
+set(CMAKE_MODULE_PATH_BAK "${CMAKE_MODULE_PATH}")
+
+find_package(Threads REQUIRED)
+
+set(NETWORKIO_LIBRARIES
+	Threads::Threads)
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+find_package(Botan)
+if (BOTAN_FOUND)
+	add_definitions(-D__WITH_BOTAN__)
+  add_definitions(${BOTAN_CFLAGS})
+  set(NETWORKIO_LIBRARIES
+    ${NETWORKIO_LIBRARIES}
+	  ${BOTAN_LIBRARIES}
+	  ${BOTAN_LDFLAGS})
+endif()
+
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH_BAK}")

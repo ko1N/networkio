@@ -1,0 +1,43 @@
+﻿---
+BasedOnStyle: LLVM
+AlignEscapedNewlinesLeft: 'false'
+AllowAllParametersOfDeclarationOnNextLine: 'false'
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: 'true'
+AllowShortIfStatementsOnASingleLine: 'false'
+AllowShortLoopsOnASingleLine: 'false'
+AlwaysBreakBeforeMultilineStrings: 'true'
+AlwaysBreakTemplateDeclarations: 'true'
+AlwaysBreakAfterDefinitionReturnType: 'true'
+BinPackParameters: 'true'
+BreakBeforeBinaryOperators: 'false'
+BreakBeforeTernaryOperators: 'true'
+BreakConstructorInitializersBeforeComma: 'false'
+ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
+Cpp11BracedListStyle: 'true'
+DerivePointerAlignment: 'false'
+IndentCaseLabels: 'true'
+IndentWrappedFunctionNames: 'false'
+Language: Cpp
+MaxEmptyLinesToKeep: '2'
+NamespaceIndentation: None
+PointerAlignment: Right
+SpaceBeforeAssignmentOperators: 'true'
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: 'false'
+SpacesBeforeTrailingComments: '1'
+SpacesInAngles: 'false'
+SpacesInCStyleCastParentheses: 'false'
+SpacesInContainerLiterals: 'false'
+SpacesInParentheses: 'false'
+Standard: Cpp11
+ColumnLimit: 120
+IndentWidth: '4'
+TabWidth: '4'
+UseTab: Always
+AllowShortCaseLabelsOnASingleLine: 'false'
+AccessModifierOffset: '-2'
+KeepEmptyLinesAtTheStartOfBlocks: 'true'
+BreakBeforeBraces: Attach
+
+...
