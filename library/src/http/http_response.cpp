@@ -50,7 +50,7 @@ response_cookie::from_string(const std::string &c) {
 				}
 			} else {
 				std::transform(key.begin(), key.end(), key.begin(), ::tolower);
-				if (key == "cxpires") {
+				if (key == "expires") {
 					if (flag.size() < 2) {
 						printf("http::response_cookie::from_string(): invalid Expires value.\n");
 						return false;
