@@ -34,11 +34,11 @@ class buffer {
 	~buffer();
 
   public:
-	const uint8_t *data(void) const;
-	const uint32_t size(void) const;
+	const uint8_t *data() const;
+	const uint32_t size() const;
 	void ensure_capacity(uint32_t size);
 	void set_offset(uint32_t offset);
-	std::string to_string(void);
+	std::string to_string();
 
   protected:
 	uint8_t *m_buffer = nullptr;

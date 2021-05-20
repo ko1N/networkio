@@ -33,7 +33,7 @@ std::list<chunk_t> chunks;
 class worker {
 
   public:
-	worker(void) {}
+	worker() {}
 	~worker() {
 		this->m_shutdown = true;
 		this->m_thread.join();
@@ -81,7 +81,7 @@ class worker {
 	}
 
 	uint32_t
-	get_port(void) {
+	get_port() {
 		return this->m_port;
 	}
 

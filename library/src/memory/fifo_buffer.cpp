@@ -17,7 +17,7 @@ using namespace networkio::memory;
 // networkio::memory::fifo_buffer
 //----------------------------------------------------------------------------
 
-fifo_buffer::fifo_buffer(void) {}
+fifo_buffer::fifo_buffer() {}
 
 fifo_buffer::~fifo_buffer() {
 	if (this->m_buffer != nullptr) {
@@ -72,13 +72,13 @@ fifo_buffer::pop_front(int32_t size) {
 }
 
 int32_t
-fifo_buffer::size(void) {
+fifo_buffer::size() {
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	return this->m_buffer_size;
 }
 
 void
-fifo_buffer::clear(void) {
+fifo_buffer::clear() {
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	if (this->m_buffer != nullptr) {
 		free(this->m_buffer);

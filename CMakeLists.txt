@@ -32,6 +32,13 @@ endmacro()
 # output directories
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/out_dirs.cmake)
 
+# linting
+set(CMAKE_CXX_CLANG_TIDY
+    clang-tidy;
+    -header-filter=.;
+    #-checks=readability-*,,,modernize-*;)
+    -checks=clang-analyzer-*,portability-*,performance-*,cppcoreguidelines-*;)
+
 # dependencies
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/deps.cmake)
 

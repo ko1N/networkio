@@ -24,7 +24,7 @@ class proto {
   public:
 	virtual ~proto() {}
 
-	virtual bool process(void) = 0;
+	virtual bool process() = 0;
 };
 
 } // namespace interfaces

@@ -28,18 +28,18 @@ namespace http {
 class session {
 
   public:
-	session(void);
+	session();
 	session(const std::string &sid);
 
   public:
 	bool
-	is_valid(void) {
+	is_valid() {
 		// TODO: check for timeout
 		return this->m_session_id != "";
 	}
 
 	const std::string &
-	session_id(void) {
+	session_id() {
 		return this->m_session_id;
 	}
 
@@ -48,7 +48,7 @@ class session {
 	// TODO: refactor using constexpr - where iss the thread safety here?
 	template <typename T>
 	std::shared_ptr<T>
-	get_userdata(std::string userdata) {
+	get_userdata(const std::string &userdata) {
 		if (this->m_userdata[userdata] == nullptr) {
 			this->m_userdata[userdata].reset(new T());
 		}
@@ -58,7 +58,7 @@ class session {
 
 	template <typename T>
 	std::shared_ptr<T>
-	get_userdata(std::string userdata, std::function<T *()> &&func) {
+	get_userdata(const std::string &userdata, std::function<T *()> &&func) {
 		if (this->m_userdata[userdata] == nullptr) {
 			this->m_userdata[userdata].reset(func());
 		}
@@ -79,13 +79,13 @@ class session {
 class session_store {
 
   public:
-	session_store(void);
+	session_store();
 
   public:
 	std::shared_ptr<session> get(connection &conn); // TODO: figure out a way to make it const
 
   protected:
-	std::string generate_session_id(void);
+	std::string generate_session_id();
 
   protected:
 	std::shared_mutex m_mutex;

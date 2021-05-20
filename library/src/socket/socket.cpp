@@ -54,7 +54,7 @@ networkio::socket::sockaddr_cmp(struct sockaddr *x, struct sockaddr *y) {
 // networkio::socket::socket
 //----------------------------------------------------------------------------
 
-socket::socket(void) {
+socket::socket() {
 #ifdef _WIN32
 	WSADATA wsaData;
 	WSAStartup(MAKEWORD(2, 0), &wsaData);
@@ -64,10 +64,10 @@ socket::socket(void) {
 socket::~socket() {}
 
 SOCKET
-socket::get_socket(void) { return this->m_sockfd; }
+socket::get_socket() { return this->m_sockfd; }
 
 int
-socket::can_recv(void) {
+socket::can_recv() {
 	if (this->m_sockfd == INVALID_SOCKET)
 		return -1;
 
@@ -85,7 +85,7 @@ socket::can_recv(void) {
 }
 
 int
-socket::can_send(void) {
+socket::can_send() {
 	if (this->m_sockfd == INVALID_SOCKET)
 		return -1;
 
@@ -146,7 +146,7 @@ socket::set_nopipe(bool nopipe) {
 }
 
 bool
-socket::close(void) {
+socket::close() {
 	if (this->m_sockfd != INVALID_SOCKET) {
 		::shutdown(this->m_sockfd, SHUT_RDWR);
 #ifdef _WIN32
@@ -162,7 +162,7 @@ socket::close(void) {
 }
 
 int
-socket::_flags(void) {
+socket::_flags() {
 #ifdef __linux__
 	if (this->m_nopipe) {
 		return MSG_NOSIGNAL;

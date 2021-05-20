@@ -27,7 +27,7 @@ class client : public virtual socket {
 	virtual ~client() {}
 
 	virtual bool connect(const std::string &addr) = 0;
-	virtual bool is_connected(void) = 0;
+	virtual bool is_connected() = 0;
 
 	virtual int32_t read_raw(uint8_t *buf, int32_t len) = 0;
 	virtual int32_t write_raw(const uint8_t *buf, int32_t len) = 0;

@@ -43,13 +43,13 @@ namespace http {
 class response_cookie {
 
   public:
-	response_cookie(void);
+	response_cookie();
 
 	//
 	// TODO: validate/sanitize on set
 	//
 	const std::string &
-	name(void) const {
+	name() const {
 		return this->m_name;
 	}
 
@@ -59,7 +59,7 @@ class response_cookie {
 	}
 
 	const std::string &
-	value(void) const {
+	value() const {
 		return this->m_value;
 	}
 
@@ -69,7 +69,7 @@ class response_cookie {
 	}
 
 	const std::string &
-	expire_date(void) const {
+	expire_date() const {
 		return this->m_expire_date;
 	}
 
@@ -79,7 +79,7 @@ class response_cookie {
 	}
 
 	int32_t
-	max_age(void) const {
+	max_age() const {
 		return this->m_max_age;
 	}
 
@@ -89,7 +89,7 @@ class response_cookie {
 	}
 
 	const std::string &
-	domain(void) const {
+	domain() const {
 		return this->m_domain;
 	}
 
@@ -99,7 +99,7 @@ class response_cookie {
 	}
 
 	const std::string &
-	path(void) const {
+	path() const {
 		return this->m_path;
 	}
 
@@ -109,7 +109,7 @@ class response_cookie {
 	}
 
 	bool
-	secure(void) const {
+	secure() const {
 		return this->m_secure;
 	}
 
@@ -119,7 +119,7 @@ class response_cookie {
 	}
 
 	bool
-	http_only(void) const {
+	http_only() const {
 		return this->m_http_only;
 	}
 
@@ -129,7 +129,7 @@ class response_cookie {
 	}
 
 	const std::string &
-	same_site(void) const {
+	same_site() const {
 		return this->m_same_site;
 	}
 
@@ -139,7 +139,7 @@ class response_cookie {
 	}
 
 	bool from_string(const std::string &c);
-	std::string to_string(void);
+	std::string to_string();
 
   protected:
 	std::string m_name;
@@ -161,7 +161,7 @@ class response_cookie {
 class response : public parser {
 
   public:
-	response(void) : m_proto("HTTP"), m_version("1.1") {
+	response() : m_proto("HTTP"), m_version("1.1") {
 		this->set_status(404);
 		this->m_header_fields["server"] = "apache";
 		this->m_header_fields["content-type"] = "text/html"; // default
@@ -192,7 +192,7 @@ class response : public parser {
 	}
 
 	int32_t
-	status(void) {
+	status() {
 		return this->m_status;
 	}
 
@@ -203,15 +203,15 @@ class response : public parser {
 	}
 
 	std::unordered_map<std::string, response_cookie> &
-	cookies(void) {
+	cookies() {
 		return this->m_cookies;
 	}
 
 	// TODO: would be cooler if this was an actual contructor
-	bool set_file(std::string f);
+	bool set_file(const std::string &f);
 
 	parser_status from_string(std::string &resp);
-	std::string to_string(void);
+	std::string to_string();
 
   protected:
 	std::string m_proto;

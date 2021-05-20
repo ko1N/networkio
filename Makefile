@@ -30,3 +30,8 @@ test_debug:
 test:
 	make test_debug
 	make test_release
+
+fmt:
+	find examples/ -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
+	find library/ -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
+	find tests/ -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i

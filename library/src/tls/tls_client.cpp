@@ -49,7 +49,7 @@ client::set_buffer_size(size_t bufsize) {
 
 // TODO: this is not the best design and we can probably get rid of this func
 bool
-client::create_socket(void) {
+client::create_socket() {
 	return false;
 }
 
@@ -118,7 +118,7 @@ client::connect(const std::string &addr) {
 }
 
 bool
-client::finish_connection(void) {
+client::finish_connection() {
 	while (!this->m_tls_channel->is_closed() && !this->m_tls_channel->is_active()) {
 		if (!this->_send() || !this->_recv()) {
 			printf("%s: failed to connect during handshake.\n", __FUNCTION__);
@@ -131,7 +131,7 @@ client::finish_connection(void) {
 }
 
 bool
-client::is_connected(void) {
+client::is_connected() {
 	if (this->m_client == nullptr || this->m_tls_channel == nullptr) {
 		return false;
 	}
@@ -140,7 +140,7 @@ client::is_connected(void) {
 }
 
 bool
-client::is_closed(void) {
+client::is_closed() {
 	if (this->m_client == nullptr || this->m_tls_channel == nullptr) {
 		return true;
 	}
@@ -149,7 +149,7 @@ client::is_closed(void) {
 }
 
 bool
-client::close(void) {
+client::close() {
 	if (this->m_tls_channel == nullptr) {
 		return false;
 	}
@@ -196,7 +196,7 @@ client::write_raw(const uint8_t *buf, int32_t len) {
 }
 
 bool
-client::_recv(void) {
+client::_recv() {
 	if (this->m_client == nullptr || !this->m_client->is_connected()) {
 		return false;
 	}
@@ -225,7 +225,7 @@ client::_recv(void) {
 }
 
 bool
-client::_send(void) {
+client::_send() {
 	if (this->m_client == nullptr || !this->m_client->is_connected()) {
 		return false;
 	}
@@ -248,7 +248,7 @@ client::_send(void) {
 }
 
 Botan::RandomNumberGenerator &
-client::rng(void) {
+client::rng() {
 	if (this->m_rng == nullptr) {
 		if (this->m_rng_type == RNG_System) {
 #if defined(BOTAN_HAS_SYSTEM_RNG)

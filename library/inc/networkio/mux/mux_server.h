@@ -43,7 +43,7 @@ class server : public networkio::socket::tcp::concurrent_server {
 	using callback_t = std::function<void(client *, networkio::proto::packet *)>;
 
   public:
-	server(void);
+	server();
 	server(std::shared_ptr<networkio::interfaces::server> sv);
 	~server();
 
@@ -67,20 +67,20 @@ class server : public networkio::socket::tcp::concurrent_server {
 
 	// client handlers
 	inline void
-	clients_lock(void) {
+	clients_lock() {
 		this->m_client_mutex.lock();
 	}
 	inline void
-	clients_unlock(void) {
+	clients_unlock() {
 		this->m_client_mutex.unlock();
 	}
 	std::list<std::shared_ptr<networkio::socket::tcp::concurrent_server_handler>> &
-	get_clients(void) {
+	get_clients() {
 		return this->m_clients;
 	}
 
   protected:
-	virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> accept_client(void) override;
+	virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> accept_client() override;
 	virtual bool process_client(std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> cl) override;
 
   protected:

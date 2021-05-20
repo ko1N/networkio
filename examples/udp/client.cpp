@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 
 uint32_t
-getcurrentpagesize(void) {
+getcurrentpagesize() {
 #if defined(_WIN32) || defined(_WIN64)
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);

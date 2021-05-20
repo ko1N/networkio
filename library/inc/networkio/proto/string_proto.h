@@ -31,10 +31,10 @@ class string_proto : public virtual interfaces::proto {
 	virtual ~string_proto();
 
   public:
-	std::string read_string(void);
-	bool write_string(std::string p);
+	std::string read_string();
+	bool write_string(const std::string &p);
 
-	virtual bool process(void) override;
+	virtual bool process() override;
 
   protected:
 	std::shared_ptr<networkio::interfaces::client> m_client;

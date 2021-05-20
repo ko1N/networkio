@@ -59,21 +59,21 @@ class client : public networkio::socket::tcp::concurrent_server_handler {
 	using callback_t = std::function<void(client *, networkio::proto::packet *)>;
 
   public:
-	client(void);
+	client();
 	client(std::shared_ptr<networkio::interfaces::client> cl);
 	~client();
 
   public:
 	void set_auto_reconnect(int seconds);
-	int get_auto_reconnect(void);
+	int get_auto_reconnect();
 
-	bool run(std::string address); // this starts the client in blocking mode and
-								   // processes all packets internally
+	bool run(const std::string &address); // this starts the client in blocking mode and
+										  // processes all packets internally
 
-	bool connect(std::string address); // this starts the client in non blocking mode
-	bool is_connected(void);
-	bool disconnect(void);
-	bool process(void); // processes the server loop if using non blocking mode
+	bool connect(const std::string &address); // this starts the client in non blocking mode
+	bool is_connected();
+	bool disconnect();
+	bool process(); // processes the server loop if using non blocking mode
 
 	// event handlers
 	void event(event_type evt, std::function<void(client *)> &&func);
@@ -97,7 +97,7 @@ class client : public networkio::socket::tcp::concurrent_server_handler {
 	// TODO: refactor using constexpr - where iss the thread safety here?
 	template <typename T>
 	std::shared_ptr<T>
-	get_userdata(std::string userdata) {
+	get_userdata(const std::string &userdata) {
 		if (this->m_userdata[userdata] == nullptr) {
 			this->m_userdata[userdata].reset(new T());
 		}
@@ -107,7 +107,7 @@ class client : public networkio::socket::tcp::concurrent_server_handler {
 
 	template <typename T>
 	std::shared_ptr<T>
-	get_userdata(std::string userdata, std::function<T *()> &&func) {
+	get_userdata(const std::string &userdata, std::function<T *()> &&func) {
 		if (this->m_userdata[userdata] == nullptr) {
 			this->m_userdata[userdata].reset(func());
 		}
@@ -116,12 +116,12 @@ class client : public networkio::socket::tcp::concurrent_server_handler {
 	}
 
   protected:
-	void handle_disconnect(void);
-	bool check_heartbeat(void);
+	void handle_disconnect();
+	bool check_heartbeat();
 
 	// TODO: i dont think thats super neat here...
 	std::mutex &
-	mutex(void) {
+	mutex() {
 		return this->m_mutex;
 	}
 

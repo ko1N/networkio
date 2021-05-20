@@ -15,10 +15,10 @@ using namespace networkio::socket;
 // networkio::mux::client
 //----------------------------------------------------------------------------
 
-client::client(void) {}
+client::client() {}
 
 client::client(std::shared_ptr<networkio::interfaces::client> cl) {
-	this->m_client = cl;
+	this->m_client = std::move(cl);
 	this->m_proto = std::make_shared<networkio::proto::packet_proto>(this->m_client);
 }
 
@@ -30,12 +30,12 @@ client::set_auto_reconnect(int seconds) {
 }
 
 int
-client::get_auto_reconnect(void) {
+client::get_auto_reconnect() {
 	return this->m_auto_reconnect;
 }
 
 bool
-client::run(std::string address) {
+client::run(const std::string &address) {
 	if (!this->connect(address)) {
 		return false;
 	}
@@ -48,7 +48,7 @@ client::run(std::string address) {
 }
 
 bool
-client::connect(std::string address) {
+client::connect(const std::string &address) {
 	if (this->m_client == nullptr) {
 		this->m_client = std::make_shared<class tcp_client>();
 	}
@@ -78,12 +78,12 @@ client::connect(std::string address) {
 }
 
 bool
-client::is_connected(void) {
+client::is_connected() {
 	return this->m_connection_state == 1;
 }
 
 bool
-client::disconnect(void) {
+client::disconnect() {
 	if (this->is_connected()) {
 		auto ev = this->m_events[event_type::disconnect];
 		if (ev != nullptr) {
@@ -95,7 +95,7 @@ client::disconnect(void) {
 }
 
 bool
-client::process(void) {
+client::process() {
 	if (this->m_proto == nullptr || !this->m_proto->process()) {
 
 		this->handle_disconnect();
@@ -202,7 +202,7 @@ client::call(const hash::hash32_t endpoint, const proto::packet *p) {
 }
 
 void
-client::handle_disconnect(void) {
+client::handle_disconnect() {
 	// disconnect event
 	if (this->m_connection_state > 0) {
 		auto ev = this->m_events[event_type::disconnect];
@@ -219,7 +219,7 @@ client::handle_disconnect(void) {
 }
 
 bool
-client::check_heartbeat(void) {
+client::check_heartbeat() {
 	auto now = std::chrono::high_resolution_clock::now();
 	this->m_send_mutex.lock();
 	std::chrono::duration<double> elapsed = now - this->m_sent_tp;

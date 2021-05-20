@@ -17,9 +17,9 @@ using namespace networkio::socket::tcp;
 // networkio::mux::server
 //----------------------------------------------------------------------------
 
-server::server(void) : concurrent_server() {}
+server::server() : concurrent_server() {}
 
-server::server(std::shared_ptr<networkio::interfaces::server> sv) : concurrent_server(sv) {}
+server::server(std::shared_ptr<networkio::interfaces::server> sv) : concurrent_server(std::move(sv)) {}
 
 server::~server() {}
 
@@ -45,7 +45,7 @@ server::endpoint(const hash::hash32_t endpoint, const callback_t &&func) {
 }
 
 std::shared_ptr<concurrent_server_handler>
-server::accept_client(void) {
+server::accept_client() {
 	struct sockaddr_in clientaddr;
 	auto cl = this->m_server->accept(&clientaddr);
 	if (cl == nullptr) {

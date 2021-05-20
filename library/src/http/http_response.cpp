@@ -18,7 +18,7 @@ using namespace networkio::socket::tcp;
 // networkio::http::response_cookie
 //----------------------------------------------------------------------------
 
-response_cookie::response_cookie(void) {}
+response_cookie::response_cookie() {}
 
 bool
 response_cookie::from_string(const std::string &c) {
@@ -133,7 +133,7 @@ name=value%20with%20spaces;Expires=Mon, 29-Aug-2011 14:30:00 GMT;Path=/
 Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
 */
 std::string
-response_cookie::to_string(void) {
+response_cookie::to_string() {
 	std::string r;
 
 	r += this->m_name + "=" + url_encode((char *)this->m_value.c_str());
@@ -166,13 +166,13 @@ response_cookie::to_string(void) {
 //----------------------------------------------------------------------------
 
 size_t
-file_getsize(std::string f) {
+file_getsize(const std::string &f) {
 	std::ifstream in(f, std::ifstream::ate | std::ifstream::binary);
 	return in.tellg();
 }
 
 bool
-file_read(std::string f, void *buf, size_t size) {
+file_read(const std::string &f, void *buf, size_t size) {
 	if (size != file_getsize(f)) {
 		return false;
 	}
@@ -188,7 +188,7 @@ file_read(std::string f, void *buf, size_t size) {
 }
 
 bool
-response::set_file(std::string f) {
+response::set_file(const std::string &f) {
 	size_t size = file_getsize(f);
 	if (size == 0) {
 		this->set_status(404);
@@ -273,7 +273,7 @@ response::from_string(std::string &resp) {
 }
 
 std::string
-response::to_string(void) {
+response::to_string() {
 	this->m_header = this->m_proto + "/" + this->m_version + " " + std::to_string(this->m_status) + " " +
 					 status_code_to_str(this->m_status);
 

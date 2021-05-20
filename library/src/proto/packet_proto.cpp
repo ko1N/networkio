@@ -17,14 +17,14 @@ using namespace networkio::proto;
 //----------------------------------------------------------------------------
 
 packet_proto::packet_proto(std::shared_ptr<networkio::interfaces::client> client) {
-	this->m_client = client;
+	this->m_client = std::move(client);
 	this->m_in_pkt_header.header.magic = 0;
 }
 
 packet_proto::~packet_proto() {}
 
 std::shared_ptr<packet>
-packet_proto::read_packet(void) {
+packet_proto::read_packet() {
 	if (this->m_client == nullptr || !this->m_client->is_connected()) {
 		return nullptr;
 	}
@@ -86,7 +86,7 @@ packet_proto::read_packet(void) {
 }
 
 bool
-packet_proto::write_packet(std::shared_ptr<packet> p) {
+packet_proto::write_packet(const std::shared_ptr<packet> &p) {
 	if (this->m_client == nullptr || !this->m_client->is_connected()) {
 		return false;
 	}
@@ -100,7 +100,7 @@ packet_proto::write_packet(std::shared_ptr<packet> p) {
 
 // TODO: we should use this sendbuffer for raw transmissions as well?!
 bool
-packet_proto::process(void) {
+packet_proto::process() {
 	if (!this->m_client->is_connected()) {
 		return false;
 	}

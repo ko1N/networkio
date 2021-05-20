@@ -3,9 +3,9 @@
 #include <networkio/stringutil.h>
 
 std::vector<std::string>
-std::tokenize(std::string s, char c) {
+std::tokenize(const std::string &str, char c) {
 	std::vector<std::string> vTokens;
-	std::string str(s), strItem;
+	std::string strItem;
 	std::stringstream strstr(str);
 	while (std::getline(strstr, strItem, c)) {
 		if (strItem != "")
@@ -16,23 +16,23 @@ std::tokenize(std::string s, char c) {
 }
 
 std::vector<std::string>
-std::tokenize(const std::string &s, std::string delimiter) {
+std::tokenize(const std::string &str, const std::string &delimiter) {
 	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
 	string token;
 	std::vector<std::string> res;
 
-	while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-		token = s.substr(pos_start, pos_end - pos_start);
+	while ((pos_end = str.find(delimiter, pos_start)) != std::string::npos) {
+		token = str.substr(pos_start, pos_end - pos_start);
 		pos_start = pos_end + delim_len;
 		res.push_back(token);
 	}
 
-	res.push_back(s.substr(pos_start));
+	res.push_back(str.substr(pos_start));
 	return res;
 }
 
 std::string
-std::strip(std::string s, char c) {
+std::strip(const std::string &s, char c) {
 	std::string s2 = s;
 	while (s2.find(c) != std::string::npos)
 		s2.erase(s2.begin() + s2.find(c));
@@ -52,7 +52,7 @@ std::strip_all(const std::string &s, const std::string &c) {
 }
 
 std::map<std::string, std::string>
-std::tojson(std::string s) {
+std::tojson(const std::string &s) {
 	std::map<std::string, std::string> r;
 	std::string s2 = strip(strip(strip(strip(strip(strip(strip(s, '\n'), '\r'), '"'), ' '), 9), '{'), '}');
 

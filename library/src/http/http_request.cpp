@@ -96,17 +96,21 @@ request::from_string(const std::string &req) {
 }
 
 std::string
-request::to_string(void) {
+request::to_string() const {
 	// TODO: get parameters...
 	// TODO: write cookies!
-	this->m_header = this->m_type + " " + // TODO: sanitize on set
-					 this->m_uri + " " +  // TODO: sanitize on set
-					 this->m_proto + "/" + this->m_version;
 	return this->header_to_string();
 }
 
+void
+request::update_header() {
+	this->m_header = this->m_type + " " + // TODO: sanitize on set
+					 this->m_uri + " " +  // TODO: sanitize on set
+					 this->m_proto + "/" + this->m_version;
+}
+
 std::unordered_map<std::string, std::string>
-request::parse_get_params(const std::string s) {
+request::parse_get_params(const std::string &s) {
 	std::unordered_map<std::string, std::string> res;
 
 	std::vector<std::string> pairs = std::tokenize(s, '&');
@@ -121,7 +125,7 @@ request::parse_get_params(const std::string s) {
 }
 
 std::unordered_map<std::string, std::string>
-request::parse_cookies(const std::string s) {
+request::parse_cookies(const std::string &s) {
 	std::unordered_map<std::string, std::string> r;
 
 	auto cookies = std::tokenize(s, ';');

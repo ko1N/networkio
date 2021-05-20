@@ -25,15 +25,15 @@ class socket {
   public:
 	virtual ~socket() {}
 
-	virtual bool is_stream(void) = 0;
+	virtual bool is_stream() = 0;
 
 	// TODO: do we really need this as a virtual?
-	virtual bool create_socket(void) = 0;
+	virtual bool create_socket() = 0;
 
 	virtual bool set_blocking(bool blocking) = 0;
 	virtual bool set_nopipe(bool nopipe) = 0;
 
-	virtual bool close(void) = 0;
+	virtual bool close() = 0;
 };
 
 } // namespace interfaces

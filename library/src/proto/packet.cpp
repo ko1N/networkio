@@ -25,7 +25,7 @@ packet::packet(SOCKADDR_IN *address) {
 }
 
 packet::packet(networkio::memory::shared_buffer buffer, SOCKADDR_IN *address) {
-	this->m_buffer = buffer;
+	this->m_buffer = std::move(buffer);
 	this->m_read_pointer = const_cast<uint8_t *>(this->m_buffer->data());
 	this->m_write_pointer = const_cast<uint8_t *>(this->m_buffer->data()) + this->m_buffer->size();
 
@@ -48,7 +48,7 @@ packet::packet(const packet &p) {
 packet::~packet() {}
 
 uint32_t
-packet::read_bytesleft(void) const {
+packet::read_bytesleft() const {
 	if (this->m_buffer == nullptr || this->m_read_pointer == nullptr) {
 		return 0;
 	}
@@ -57,7 +57,7 @@ packet::read_bytesleft(void) const {
 }
 
 std::string
-packet::read_string(void) {
+packet::read_string() {
 	uint32_t length = this->read<uint32_t>();
 	if (length == 0) {
 		return "";
@@ -70,6 +70,7 @@ packet::read_string(void) {
 		free(buffer);
 		return str;
 	} else {
+		free(buffer);
 		return "";
 	}
 }
@@ -103,13 +104,13 @@ packet::ensure_capacity(uint32_t length) {
 }
 
 void
-packet::write_string(std::string str) {
+packet::write_string(const std::string &str) {
 	this->write((uint32_t)str.length()); // we force to write an uint32 here
 	this->write_data((uint8_t *)str.c_str(), str.length());
 }
 
 std::string
-packet::to_string(void) {
+packet::to_string() {
 	if (this->m_buffer == nullptr) {
 		return "";
 	}

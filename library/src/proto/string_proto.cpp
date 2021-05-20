@@ -16,12 +16,14 @@ using namespace networkio::proto;
 // networkio::proto::string_proto
 //----------------------------------------------------------------------------
 
-string_proto::string_proto(std::shared_ptr<networkio::interfaces::client> client) { this->m_client = client; }
+string_proto::string_proto(std::shared_ptr<networkio::interfaces::client> client) {
+	this->m_client = std::move(client);
+}
 
 string_proto::~string_proto() {}
 
 std::string
-string_proto::read_string(void) {
+string_proto::read_string() {
 	if (this->m_client == nullptr || !this->m_client->is_connected()) {
 		return "";
 	}
@@ -40,7 +42,7 @@ string_proto::read_string(void) {
 }
 
 bool
-string_proto::write_string(std::string s) {
+string_proto::write_string(const std::string &s) {
 	if (this->m_client == nullptr || !this->m_client->is_connected())
 		return false;
 
@@ -52,7 +54,7 @@ string_proto::write_string(std::string s) {
 
 // TODO: we should use this sendbuffer for raw transmissions as well?!
 bool
-string_proto::process(void) {
+string_proto::process() {
 	if (this->m_out_string == "") {
 		return true;
 	}

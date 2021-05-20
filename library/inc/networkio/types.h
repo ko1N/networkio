@@ -77,7 +77,7 @@ sleep(unsigned int s) {
 #define PBYTE unsigned char *
 
 inline DWORD
-GetTickCount(void) {
+GetTickCount() {
 	struct timespec sTimeSpec;
 	unsigned long ulTick = 0U;
 	clock_gettime(CLOCK_REALTIME, &sTimeSpec);
@@ -131,7 +131,7 @@ sleep(unsigned int s) {
 #define PBYTE unsigned char *
 
 inline DWORD
-GetTickCount(void) {
+GetTickCount() {
 	struct timespec sTimeSpec;
 	unsigned long ulTick = 0U;
 	clock_gettime(CLOCK_REALTIME, &sTimeSpec);

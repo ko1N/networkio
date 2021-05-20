@@ -42,11 +42,11 @@ namespace http {
 class connection {
 
   public:
-	connection(void) {}
+	connection() {}
 
   public:
 	inline networkio::http::request &
-	request(void) {
+	request() {
 		return this->m_request;
 	}
 
@@ -56,7 +56,7 @@ class connection {
 	}
 
 	inline networkio::http::response &
-	response(void) {
+	response() {
 		return this->m_response;
 	}
 
@@ -86,7 +86,7 @@ class endpoint {
 	}
 
 	std::function<void(connection &)> &
-	get(void) {
+	get() {
 		return this->m_get;
 	}
 
@@ -97,12 +97,12 @@ class endpoint {
 	}
 
 	std::function<void(connection &)> &
-	post(void) {
+	post() {
 		return this->m_post;
 	}
 
 	endpoint &
-	folder(std::string folder) {
+	folder(const std::string &folder) {
 		this->m_folder = folder;
 		return *this;
 	}
@@ -121,7 +121,7 @@ class endpoint_lock {
 
   public:
 	endpoint_lock(std::shared_ptr<endpoint> ep, std::mutex *ep_mutex) {
-		this->m_ep = ep;
+		this->m_ep = std::move(ep);
 		this->m_ep_mutex = ep_mutex;
 		this->m_ep_mutex->lock();
 	}
@@ -130,7 +130,7 @@ class endpoint_lock {
 
   public:
 	std::shared_ptr<endpoint>
-	operator->(void) const {
+	operator->() const {
 		return this->m_ep;
 	}
 
@@ -149,7 +149,7 @@ class server_handler : public networkio::socket::tcp::concurrent_server_handler 
 	friend class server;
 
   public:
-	server_handler(server *sv, std::shared_ptr<interfaces::client> cl) {
+	server_handler(server *sv, const std::shared_ptr<interfaces::client> &cl) {
 		this->m_server = sv;
 		this->m_client = cl;
 
@@ -159,11 +159,11 @@ class server_handler : public networkio::socket::tcp::concurrent_server_handler 
 
 	~server_handler() {}
 
-	virtual bool process(void) override;
+	virtual bool process() override;
 
   protected:
-	bool check_timeout(void);
-	parser_status handle_request(void);
+	bool check_timeout();
+	parser_status handle_request();
 	parser_status handle_request_get(connection &conn);
 	parser_status handle_request_post(connection &conn);
 
@@ -195,16 +195,16 @@ class server : public networkio::socket::tcp::concurrent_server {
 	friend class server_handler;
 
   public:
-	server(void);
+	server();
 	server(std::shared_ptr<networkio::interfaces::server> sv);
 	~server();
 
   public:
-	endpoint_lock endpoint_default(void);
+	endpoint_lock endpoint_default();
 	endpoint_lock endpoint(const std::string &endpoint);
 
   protected:
-	virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> accept_client(void) override;
+	virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> accept_client() override;
 	virtual bool process_client(std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> cl) override;
 
   protected:

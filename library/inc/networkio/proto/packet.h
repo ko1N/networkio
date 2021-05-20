@@ -34,40 +34,40 @@ class packet {
   public:
 	// packet handling
 	inline memory::shared_buffer
-	buffer(void) const {
+	buffer() const {
 		return this->m_buffer;
 	}
 	inline uint32_t
-	size(void) const {
+	size() const {
 		if (this->m_buffer == nullptr || this->m_write_pointer == nullptr) {
 			return 0;
 		}
 		return (uint32_t)(this->m_write_pointer - this->m_buffer->data());
 	}
 	inline SOCKADDR_IN *
-	address(void) {
+	address() {
 		return &this->m_address;
 	}
 
 	// reading
 	inline void
-	begin_read(void) {
+	begin_read() {
 		if (this->m_buffer != nullptr) {
 			this->m_read_pointer = const_cast<uint8_t *>(this->m_buffer->data());
 		}
 	}
 	inline void
-	set_start(void) {
+	set_start() {
 		if (this->m_buffer != nullptr && this->m_read_pointer != nullptr) {
 			this->m_buffer->set_offset((uint32_t)(this->m_read_pointer - this->m_buffer->data()));
 			this->begin_read();
 		}
 	}
 	inline uint8_t *
-	read_buffer(void) const {
+	read_buffer() const {
 		return this->m_read_pointer;
 	}
-	uint32_t read_bytesleft(void) const;
+	uint32_t read_bytesleft() const;
 
 	inline bool
 	read_data(uint8_t *buffer, uint32_t length) {
@@ -82,7 +82,7 @@ class packet {
 
 	template <typename T>
 	T
-	read(void) {
+	read() {
 		T val;
 		if (this->read_data((uint8_t *)&val, sizeof(T))) {
 			return val;
@@ -91,7 +91,7 @@ class packet {
 		}
 	}
 
-	std::string read_string(void);
+	std::string read_string();
 
 	// writing
 	void ensure_capacity(uint32_t length);
@@ -109,9 +109,9 @@ class packet {
 		this->write_data((uint8_t *)&val, sizeof(T));
 	}
 
-	void write_string(std::string str);
+	void write_string(const std::string &str);
 
-	std::string to_string(void);
+	std::string to_string();
 
   private:
 	memory::shared_buffer m_buffer;

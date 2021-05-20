@@ -4,7 +4,7 @@
 
 using namespace networkio::tls;
 
-credentials_manager::credentials_manager(void) {}
+credentials_manager::credentials_manager() {}
 
 credentials_manager::credentials_manager(const std::string &cert) {
 	std::shared_ptr<Botan::DataSource_Memory> cds;

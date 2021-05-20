@@ -30,15 +30,15 @@ namespace socket {
 class udp_socket : public socket {
 
   public:
-	udp_socket(void);
+	udp_socket();
 	virtual ~udp_socket();
 
   public:
 	virtual bool
-	is_stream(void) override {
+	is_stream() override {
 		return false;
 	}
-	virtual bool create_socket(void) override;
+	virtual bool create_socket() override;
 };
 
 //----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ class udp_client;
 class udp_server : public udp_socket, public virtual interfaces::server {
 
   public:
-	udp_server(void);
+	udp_server();
 	virtual ~udp_server();
 
   public:
@@ -57,7 +57,7 @@ class udp_server : public udp_socket, public virtual interfaces::server {
 	virtual std::shared_ptr<interfaces::client> accept(struct sockaddr_in *addr = nullptr) override;
 
   public:
-	void _recv(void);
+	void _recv();
 
   protected:
 	// TODO: implementing a unordered map with custom hashing would be p
@@ -76,14 +76,14 @@ class udp_client : public udp_socket, public virtual interfaces::client {
 	friend class udp_server;
 
   public:
-	udp_client(void);
+	udp_client();
 	udp_client(udp_server *server, SOCKET sockfd, SOCKADDR_IN *addr);
 	virtual ~udp_client();
 
   public:
 	virtual bool connect(const std::string &addr) override;
-	virtual bool is_connected(void) override;
-	virtual bool close(void) override;
+	virtual bool is_connected() override;
+	virtual bool close() override;
 
   public:
 	virtual int32_t read_raw(uint8_t *buf, int32_t size) override;

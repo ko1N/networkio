@@ -46,20 +46,20 @@ class server : public virtual networkio::interfaces::server {
 
 	// interface implementations
 	virtual bool
-	is_stream(void) override {
+	is_stream() override {
 		return true;
 	}
-	virtual bool create_socket(void) override;
+	virtual bool create_socket() override;
 	virtual bool set_blocking(bool block) override;
 	virtual bool set_nopipe(bool nopipe) override;
 
 	virtual bool bind(const u_short port) override;
 	virtual std::shared_ptr<networkio::interfaces::client> accept(struct sockaddr_in *addr = nullptr) override;
 
-	virtual bool close(void) override;
+	virtual bool close() override;
 
   protected:
-	Botan::RandomNumberGenerator &rng(void);
+	Botan::RandomNumberGenerator &rng();
 
   protected:
 	rng_type m_rng_type;

@@ -31,7 +31,7 @@ std::vector<chunk_t> chunks;
 //----------------------------------------------------------------------------
 
 uint32_t
-getcurrentpagesize(void) {
+getcurrentpagesize() {
 #if defined(_WIN32) || defined(_WIN64)
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -77,14 +77,14 @@ make_shared_array(size_t size) {
 class worker {
 
   public:
-	worker(void) {}
+	worker() {}
 	~worker() {
 		this->m_shutdown = true;
 		this->m_thread.join();
 	}
 
 	bool
-	start(std::string addr) {
+	start(const std::string &addr) {
 		this->m_client.reset(new socket::udp_client());
 		this->m_client->set_blocking(false);
 
@@ -127,7 +127,7 @@ class worker {
 	}
 
 	size_t
-	queue_size(void) {
+	queue_size() {
 		return this->m_queue.size();
 	}
 

@@ -12,7 +12,7 @@ using namespace networkio::http;
 // networkio::http::session
 //----------------------------------------------------------------------------
 
-session::session(void) {}
+session::session() {}
 
 session::session(const std::string &sid) { this->m_session_id = sid; }
 
@@ -20,7 +20,7 @@ session::session(const std::string &sid) { this->m_session_id = sid; }
 // networkio::http::session_store
 //----------------------------------------------------------------------------
 
-session_store::session_store(void) {}
+session_store::session_store() {}
 
 std::shared_ptr<session>
 session_store::get(connection &conn) {
@@ -65,7 +65,7 @@ session_store::get(connection &conn) {
 }
 
 std::string
-session_store::generate_session_id(void) {
+session_store::generate_session_id() {
 	// TODO: implement me
 	/*
 	std::unique_ptr<Botan::RandomNumberGenerator> rng;

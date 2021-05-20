@@ -31,7 +31,7 @@ namespace tls {
 
 class credentials_manager : public Botan::Credentials_Manager {
   public:
-	credentials_manager(void);
+	credentials_manager();
 	credentials_manager(const std::string &cert);
 	credentials_manager(const std::string &cert, Botan::RandomNumberGenerator &rng, const std::string &priv_key,
 						const std::string &priv_key_pwd);

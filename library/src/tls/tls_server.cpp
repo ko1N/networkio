@@ -38,7 +38,7 @@ server::set_buffer_size(size_t bufsize) {
 
 // TODO: this is not the best design and we can probably get rid of this func
 bool
-server::create_socket(void) {
+server::create_socket() {
 	return false;
 }
 
@@ -105,7 +105,7 @@ server::accept(struct sockaddr_in *addr) {
 }
 
 bool
-server::close(void) {
+server::close() {
 	if (this->m_server == nullptr)
 		return false;
 
@@ -115,7 +115,7 @@ server::close(void) {
 }
 
 Botan::RandomNumberGenerator &
-server::rng(void) {
+server::rng() {
 	if (this->m_rng == nullptr) {
 		if (this->m_rng_type == RNG_System) {
 #if defined(BOTAN_HAS_SYSTEM_RNG)

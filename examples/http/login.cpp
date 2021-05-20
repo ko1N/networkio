@@ -20,7 +20,7 @@
 // globals
 //----------------------------------------------------------------------------
 
-#define HOST_PORT 14447
+#define HOST_PORT 8080
 const std::string certificate = HOST_CLIENT_CERT;
 const std::string privatekey = HOST_PRIVATE_KEY;
 

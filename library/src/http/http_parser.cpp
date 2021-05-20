@@ -16,12 +16,12 @@ using namespace networkio::http;
 // networkio::http::parser
 //----------------------------------------------------------------------------
 
-parser::parser(void) {}
+parser::parser() {}
 
 parser::~parser() {}
 
 parser_status
-parser::header_from_string(std::string http) {
+parser::header_from_string(const std::string &http) {
 	// seperate body from header
 	auto header_end = http.find("\r\n\r\n");
 	if (header_end == std::string::npos) {
@@ -35,7 +35,7 @@ parser::header_from_string(std::string http) {
 
 	// parse header
 	auto header_lines = std::tokenize(header, "\r\n");
-	if (header_lines.size() < 1) {
+	if (header_lines.empty()) {
 		printf("http::parser::from_string(): header only consists of 1 line.\n");
 		return PARSE_ERROR_AGAIN;
 	}
@@ -59,7 +59,7 @@ parser::header_from_string(std::string http) {
 }
 
 std::string
-parser::header_to_string(void) {
+parser::header_to_string() const {
 	// header
 	std::string r = this->m_header + "\r\n";
 

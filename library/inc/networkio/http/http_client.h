@@ -22,7 +22,7 @@ namespace http {
 class client {
 
   public:
-	client(void);
+	client();
 	client(std::shared_ptr<networkio::interfaces::client> cl);
 	~client();
 
@@ -34,7 +34,7 @@ class client {
 	*/
 
 	double
-	get_timeout(void) {
+	get_timeout() const {
 		return this->m_timeout;
 	}
 
@@ -44,7 +44,7 @@ class client {
 	}
 
 	int
-	get_follow_redirects(void) {
+	get_follow_redirects() const {
 		return this->m_follow_redirects;
 	}
 
@@ -58,7 +58,8 @@ class client {
 
   protected:
 	bool build_request(std::string &url, std::string &address, networkio::http::request &req);
-	networkio::http::response process_request(std::string address, networkio::http::request request, int redirects = 0);
+	networkio::http::response process_request(const std::string &address, const networkio::http::request &request,
+											  int redirects = 0);
 
   protected:
 	std::shared_ptr<networkio::interfaces::client> m_client;

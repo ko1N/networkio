@@ -22,7 +22,7 @@ using namespace networkio::socket;
 // tcp_socket
 //----------------------------------------------------------------------------
 
-tcp_socket::tcp_socket(void) : socket() {}
+tcp_socket::tcp_socket() : socket() {}
 
 tcp_socket::~tcp_socket() {
 	this->close();
@@ -31,7 +31,7 @@ tcp_socket::~tcp_socket() {
 }
 
 bool
-tcp_socket::create_socket(void) {
+tcp_socket::create_socket() {
 	if (this->m_sockfd != INVALID_SOCKET)
 		return false;
 
@@ -55,7 +55,7 @@ tcp_socket::create_socket(void) {
 // tcp_server
 //----------------------------------------------------------------------------
 
-tcp_server::tcp_server(void) : tcp_socket() {}
+tcp_server::tcp_server() : tcp_socket() {}
 
 tcp_server::~tcp_server() { this->close(); }
 
@@ -120,9 +120,12 @@ tcp_server::accept(struct sockaddr_in *addr) {
 // tcp_client
 //----------------------------------------------------------------------------
 
-tcp_client::tcp_client(void) : tcp_socket() {}
+tcp_client::tcp_client() : tcp_socket() {}
 
-tcp_client::~tcp_client() { this->close(); }
+tcp_client::~tcp_client() {
+	this->m_connected = false;
+	tcp_socket::close();
+}
 
 bool
 tcp_client::connect(const std::string &addr) {
@@ -165,12 +168,12 @@ tcp_client::connect(const std::string &addr) {
 }
 
 bool
-tcp_client::is_connected(void) {
+tcp_client::is_connected() {
 	return this->m_sockfd != INVALID_SOCKET && this->m_connected;
 }
 
 bool
-tcp_client::close(void) {
+tcp_client::close() {
 	this->m_connected = false;
 	return tcp_socket::close();
 }

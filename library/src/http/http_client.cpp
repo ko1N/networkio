@@ -13,9 +13,9 @@ using namespace networkio::socket::tcp;
 // networkio::http::client
 //----------------------------------------------------------------------------
 
-client::client(void) { this->m_client = std::make_shared<networkio::socket::tcp_client>(); }
+client::client() { this->m_client = std::make_shared<networkio::socket::tcp_client>(); }
 
-client::client(std::shared_ptr<networkio::interfaces::client> cl) { this->m_client = cl; }
+client::client(std::shared_ptr<networkio::interfaces::client> cl) { this->m_client = std::move(cl); }
 
 client::~client() {}
 
@@ -76,7 +76,7 @@ client::build_request(std::string &url, std::string &address, networkio::http::r
 		host = url;
 	}
 
-	auto host_split = host.find_first_of("/");
+	auto host_split = host.find_first_of('/');
 	if (host_split == std::string::npos) {
 		// just acess / on the url, parse port though
 		hostname = host;
@@ -99,7 +99,7 @@ client::build_request(std::string &url, std::string &address, networkio::http::r
 		uri = host.substr(host_split);
 	}
 
-	auto uri_split = uri.find_first_of("?");
+	auto uri_split = uri.find_first_of('?');
 	if (uri_split != std::string::npos) {
 		auto get_params = uri.substr(uri_split + 1);
 		uri = uri.substr(0, uri_split);
@@ -131,7 +131,7 @@ client::build_request(std::string &url, std::string &address, networkio::http::r
 }
 
 networkio::http::response
-client::process_request(std::string address, networkio::http::request request, int redirects) {
+client::process_request(const std::string &address, const networkio::http::request &request, int redirects) {
 	if (this->m_client == nullptr) {
 		return response();
 	}

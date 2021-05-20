@@ -35,7 +35,7 @@
 		printf("%s: running test/%s:\n", project, name);                                                               \
 		std::vector<std::pair<std::string, std::function<void()>>> tests;
 
-#define ADD_TEST(name, func) tests.push_back(std::make_pair(name, []() { func }));
+#define ADD_TEST(name, func) tests.emplace_back(std::make_pair(name, []() { func }));
 
 #define END_TESTS(project)                                                                                             \
 	for (size_t i = 0; i < tests.size(); i++) {                                                                        \

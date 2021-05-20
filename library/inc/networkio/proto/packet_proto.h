@@ -46,10 +46,10 @@ class packet_proto : public virtual interfaces::proto {
 	virtual ~packet_proto();
 
   public:
-	std::shared_ptr<packet> read_packet(void);
-	bool write_packet(std::shared_ptr<packet> p);
+	std::shared_ptr<packet> read_packet();
+	bool write_packet(const std::shared_ptr<packet> &p);
 
-	virtual bool process(void) override;
+	virtual bool process() override;
 
   protected:
 	bool is_valid_pkt_header(const pkt_header_t *hdr);

@@ -22,7 +22,7 @@
 //----------------------------------------------------------------------------
 
 void
-client_thread(std::shared_ptr<networkio::interfaces::client> client) {
+client_thread(const std::shared_ptr<networkio::interfaces::client> &client) {
 	clock_t start = clock();
 	uint64_t rcvd = 0;
 	uint64_t s = 0;

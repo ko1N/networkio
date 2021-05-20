@@ -47,30 +47,30 @@ class client : public virtual networkio::interfaces::client, public Botan::TLS::
 
 	// client interfaces
 	virtual bool
-	is_stream(void) override {
+	is_stream() override {
 		return true;
 	}
-	virtual bool create_socket(void) override;
+	virtual bool create_socket() override;
 	virtual bool set_blocking(bool block) override;
 	virtual bool set_nopipe(bool nopipe) override;
 
 	virtual bool connect(const std::string &addr) override;
-	virtual bool finish_connection(void);
+	virtual bool finish_connection();
 
-	bool is_connected(void) override;
+	bool is_connected() override;
 	bool is_closed();
 
 	virtual int32_t read_raw(uint8_t *buf, int32_t len) override;
 	virtual int32_t write_raw(const uint8_t *buf, int32_t len) override;
 
-	virtual bool close(void) override;
+	virtual bool close() override;
 
   protected:
-	bool _recv(void);
-	bool _send(void);
+	bool _recv();
+	bool _send();
 
   protected:
-	Botan::RandomNumberGenerator &rng(void);
+	Botan::RandomNumberGenerator &rng();
 
   protected:
 	void tls_verify_cert_chain(const std::vector<Botan::X509_Certificate> &cert_chain,

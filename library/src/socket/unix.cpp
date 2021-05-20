@@ -18,7 +18,7 @@ using namespace networkio::socket;
 // unix_socket
 //----------------------------------------------------------------------------
 
-unix_socket::unix_socket(void) : socket() {}
+unix_socket::unix_socket() : socket() {}
 
 unix_socket::~unix_socket() {
 	this->close();
@@ -27,7 +27,7 @@ unix_socket::~unix_socket() {
 }
 
 bool
-unix_socket::create_socket(void) {
+unix_socket::create_socket() {
 	if (this->m_sockfd != INVALID_SOCKET) {
 		this->close();
 	}
@@ -47,9 +47,12 @@ unix_socket::create_socket(void) {
 // unix_server
 //----------------------------------------------------------------------------
 
-unix_server::unix_server(void) : unix_socket() {}
+unix_server::unix_server() : unix_socket() {}
 
-unix_server::~unix_server() { this->close(); }
+unix_server::~unix_server() {
+	unix_socket::close();
+	::unlink(this->m_path.c_str());
+}
 
 bool
 unix_server::bind(const u_short port) {
@@ -118,7 +121,7 @@ unix_server::accept(struct sockaddr_in *addr) {
 }
 
 bool
-unix_server::close(void) {
+unix_server::close() {
 	unix_socket::close();
 	::unlink(this->m_path.c_str());
 	return true;
@@ -128,9 +131,12 @@ unix_server::close(void) {
 // unix_client
 //----------------------------------------------------------------------------
 
-unix_client::unix_client(void) : unix_socket() {}
+unix_client::unix_client() : unix_socket() {}
 
-unix_client::~unix_client() { this->close(); }
+unix_client::~unix_client() {
+	this->m_connected = false;
+	unix_socket::close();
+}
 
 bool
 unix_client::connect(const std::string &addr) {
@@ -173,12 +179,12 @@ unix_client::connect(const std::string &addr) {
 }
 
 bool
-unix_client::is_connected(void) {
+unix_client::is_connected() {
 	return this->m_connected;
 }
 
 bool
-unix_client::close(void) {
+unix_client::close() {
 	this->m_connected = false;
 	return unix_socket::close();
 }

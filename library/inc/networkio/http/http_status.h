@@ -67,7 +67,7 @@ status_code_to_str(int32_t code) {
 }
 
 static inline int32_t
-status_str_to_code(std::string name) {
+status_str_to_code(const std::string &name) {
 	for (int i = 0; status_codes[i].code != 0; i++) {
 		if (status_codes[i].name == name) {
 			return status_codes[i].code;
@@ -77,10 +77,10 @@ status_str_to_code(std::string name) {
 }
 
 static inline std::string
-resolve_content_type(std::string filename) {
+resolve_content_type(const std::string &filename) {
 	std::string ext;
 	try {
-		ext = filename.substr(filename.find_last_of(".") + 1);
+		ext = filename.substr(filename.find_last_of('.') + 1);
 	} catch (std::out_of_range &e) {
 		return "text/plain";
 	}

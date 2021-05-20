@@ -28,11 +28,11 @@ enum parser_status {
 
 class parser {
   public:
-	parser(void);
+	parser();
 	virtual ~parser();
 
 	const std::string &
-	header(void) {
+	header() {
 		return this->m_header;
 	}
 
@@ -43,12 +43,12 @@ class parser {
 
 	// lookups are not const
 	std::unordered_map<std::string, std::string> &
-	header_fields(void) {
+	header_fields() {
 		return this->m_header_fields;
 	}
 
 	const std::string &
-	body(void) {
+	body() {
 		return this->m_body;
 	}
 
@@ -58,10 +58,9 @@ class parser {
 	}
 
   protected:
-	parser_status header_from_string(std::string http);
-	std::string header_to_string(void);
+	parser_status header_from_string(const std::string &http);
+	std::string header_to_string() const;
 
-  protected:
 	std::string m_header;
 	std::unordered_map<std::string, std::string> m_header_fields;
 	std::string m_body;

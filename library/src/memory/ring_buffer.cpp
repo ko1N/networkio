@@ -17,7 +17,7 @@ using namespace networkio::memory;
 // networkio::memory::ring_buffer
 //----------------------------------------------------------------------------
 
-ring_buffer::ring_buffer(void) {}
+ring_buffer::ring_buffer() {}
 
 ring_buffer::ring_buffer(int32_t initial_size) { this->_ensure_capacity(initial_size); }
 
@@ -91,18 +91,18 @@ ring_buffer::pop_front(int32_t size) {
 }
 
 int32_t
-ring_buffer::size(void) {
+ring_buffer::size() {
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 	return this->_bytes_written();
 }
 
 int32_t
-ring_buffer::_bytes_left(void) {
+ring_buffer::_bytes_left() {
 	return this->m_buffer_size - this->_bytes_written();
 }
 
 int32_t
-ring_buffer::_bytes_written(void) {
+ring_buffer::_bytes_written() {
 	return this->m_bytes_written;
 }
 

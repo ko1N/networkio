@@ -27,7 +27,7 @@ namespace memory {
 class ring_buffer {
 
   public:
-	ring_buffer(void);
+	ring_buffer();
 	ring_buffer(int32_t initial_size);
 	~ring_buffer();
 
@@ -38,7 +38,7 @@ class ring_buffer {
 
 	template <typename T>
 	T
-	peek(void) {
+	peek() {
 		std::lock_guard<std::mutex> lock(this->m_mutex);
 
 		T r{};
@@ -49,11 +49,11 @@ class ring_buffer {
 		return r;
 	}
 
-	int32_t size(void);
+	int32_t size();
 
   protected:
-	int32_t _bytes_left(void);
-	int32_t _bytes_written(void);
+	int32_t _bytes_left();
+	int32_t _bytes_written();
 	void _ensure_capacity(int32_t size);
 	int32_t _pop_front(uint8_t *buf, int32_t size);
 

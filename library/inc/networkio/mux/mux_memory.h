@@ -40,17 +40,17 @@ class base_memory {
 
   public:
 	void *
-	base(void) {
+	base() {
 		return this->m_mem;
 	}
 
 	const void *
-	base_synced(void) {
+	base_synced() {
 		return this->m_mem_synced;
 	}
 
 	void
-	sync(void) {
+	sync() {
 		memcpy(this->m_mem_synced, this->m_mem, this->m_len);
 	}
 
@@ -68,7 +68,7 @@ template <class T>
 class memory : public base_memory {
 
   public:
-	memory<T>(void) {
+	memory<T>() {
 		this->m_mem = (T *)malloc(sizeof(T));
 		this->m_mem_synced = (T *)malloc(sizeof(T));
 		this->m_len = sizeof(T);
@@ -76,7 +76,7 @@ class memory : public base_memory {
 
   public:
 	T *
-	base(void) {
+	base() {
 		return this->m_mem;
 	}
 };

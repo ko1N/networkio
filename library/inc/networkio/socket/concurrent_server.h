@@ -40,7 +40,7 @@ class concurrent_server_handler {
 	virtual ~concurrent_server_handler() {}
 
   public:
-	virtual bool process(void) = 0;
+	virtual bool process() = 0;
 };
 
 //----------------------------------------------------------------------------
@@ -50,16 +50,16 @@ class concurrent_server_handler {
 class concurrent_server {
 
   public:
-	concurrent_server(void);
+	concurrent_server();
 	concurrent_server(std::shared_ptr<networkio::interfaces::server> sv);
 	virtual ~concurrent_server();
 
   public:
 	// configuration
 	bool set_sleep(uint32_t sleep);
-	uint32_t get_sleep(void);
+	uint32_t get_sleep();
 	bool set_threads(uint32_t threads);
-	uint32_t get_threads(void);
+	uint32_t get_threads();
 
 	// this starts the server in blocking mode and processes all packets
 	// internally
@@ -69,15 +69,15 @@ class concurrent_server {
 	bool start(u_short port);
 
 	// processes the server loop if using non blocking mode
-	bool process(void);
+	bool process();
 
 	// client accessing
 
 	// shutdown the server and all associated threads
-	void shutdown(void);
+	void shutdown();
 
   protected:
-	virtual std::shared_ptr<concurrent_server_handler> accept_client(void) = 0;
+	virtual std::shared_ptr<concurrent_server_handler> accept_client() = 0;
 	virtual bool process_client(std::shared_ptr<concurrent_server_handler> cl) = 0;
 	static void worker(concurrent_server *sv);
 

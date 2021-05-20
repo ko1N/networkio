@@ -57,22 +57,22 @@ int sockaddr_cmp(struct sockaddr *x, struct sockaddr *y);
 
 class socket : public virtual interfaces::socket {
   public:
-	socket(void);
+	socket();
 	virtual ~socket();
 
   public:
-	SOCKET get_socket(void);
+	SOCKET get_socket();
 
-	int can_recv(void);
-	int can_send(void);
+	int can_recv();
+	int can_send();
 
 	virtual bool set_blocking(bool blocking) override;
 	virtual bool set_nopipe(bool nopipe) override;
 
-	virtual bool close(void) override;
+	virtual bool close() override;
 
   protected:
-	int _flags(void);
+	int _flags();
 
   protected:
 	SOCKET m_sockfd = INVALID_SOCKET;

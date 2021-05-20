@@ -38,12 +38,12 @@ buffer::~buffer() {
 }
 
 const uint8_t *
-buffer::data(void) const {
+buffer::data() const {
 	return this->m_begin;
 }
 
 const uint32_t
-buffer::size(void) const {
+buffer::size() const {
 	return this->m_size - this->m_offset;
 }
 
@@ -68,7 +68,7 @@ buffer::set_offset(uint32_t offset) {
 }
 
 std::string
-buffer::to_string(void) {
+buffer::to_string() {
 	std::stringstream ss;
 	for (uint32_t i = 0; i < this->size(); i++) {
 		ss << std::hex << (unsigned int)(this->m_begin[i]);

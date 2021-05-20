@@ -23,7 +23,7 @@ std::mutex request_mutex;
 int requests = 0;
 
 void
-worker(std::string type, std::string url) {
+worker(const std::string &type, const std::string &url) {
 	// TODO: chain validation if cert is not set
 	// TODO: auto setup client based on http/https
 	std::shared_ptr<networkio::http::client> client;

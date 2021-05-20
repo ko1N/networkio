@@ -36,8 +36,9 @@ fnv1a_ring(const std::string &str, hash32_t hash = FNV1A_BIAS) {
 	hash32_t start = hash;
 
 	for (const auto &c : str) {
-		if (c == '\0')
+		if (c == '\0') {
 			continue;
+		}
 
 		start ^= uint8_t(c);
 		start *= FNV1A_PRIME;

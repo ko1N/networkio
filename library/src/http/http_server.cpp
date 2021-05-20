@@ -17,7 +17,7 @@ using namespace networkio::socket::tcp;
 //----------------------------------------------------------------------------
 
 bool
-server_handler::process(void) {
+server_handler::process() {
 	// timeout reached, close client and remove it
 	if (!this->check_timeout()) {
 		this->m_client->close();
@@ -112,7 +112,7 @@ server_handler::process(void) {
 }
 
 bool
-server_handler::check_timeout(void) {
+server_handler::check_timeout() {
 	// if keep_alive is disabled dont check for timeout
 	if (!this->m_keep_alive) {
 		return true;
@@ -128,7 +128,7 @@ server_handler::check_timeout(void) {
 }
 
 parser_status
-server_handler::handle_request(void) {
+server_handler::handle_request() {
 	connection conn;
 
 	/*
@@ -210,7 +210,7 @@ server_handler::handle_request_get(connection &conn) {
 			}
 			this->m_server->m_endpoints_mutex.unlock();
 
-			if (efolder != "") {
+			if (!efolder.empty()) {
 				// TODO: this is super inefficient
 				for (size_t j = i + 1; j < uri.size(); j++) {
 					f += "/";
@@ -291,14 +291,14 @@ server_handler::handle_request_post(connection &conn) {
 // networkio::http::server
 //----------------------------------------------------------------------------
 
-server::server(void) : concurrent_server() {}
+server::server() : concurrent_server() {}
 
-server::server(std::shared_ptr<networkio::interfaces::server> sv) : concurrent_server(sv) {}
+server::server(std::shared_ptr<networkio::interfaces::server> sv) : concurrent_server(std::move(sv)) {}
 
 server::~server() {}
 
 endpoint_lock
-server::endpoint_default(void) {
+server::endpoint_default() {
 	if (this->m_default_endpoint == nullptr) {
 		this->m_default_endpoint.reset(new class endpoint());
 	}
@@ -325,14 +325,14 @@ server::endpoint(const std::string &endpoint) {
 }
 
 std::shared_ptr<concurrent_server_handler>
-server::accept_client(void) {
+server::accept_client() {
 	struct sockaddr_in clientaddr;
 	auto cl = this->m_server->accept(&clientaddr);
 	if (cl == nullptr) {
 		return nullptr;
 	}
 
-	return std::make_shared<class server_handler>(this, cl);
+	return std::make_shared<class server_handler>(this, std::move(cl));
 }
 
 // TODO: check for client timeouts

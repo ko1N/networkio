@@ -16,9 +16,11 @@ using namespace networkio::socket::tcp;
 //----------------------------------------------------------------------------
 
 // if no argument was supplied we will start a tcp server
-concurrent_server::concurrent_server(void) { this->m_server = std::make_shared<networkio::socket::tcp_server>(); }
+concurrent_server::concurrent_server() { this->m_server = std::make_shared<networkio::socket::tcp_server>(); }
 
-concurrent_server::concurrent_server(std::shared_ptr<networkio::interfaces::server> sv) { this->m_server = sv; }
+concurrent_server::concurrent_server(std::shared_ptr<networkio::interfaces::server> sv) {
+	this->m_server = std::move(sv);
+}
 
 concurrent_server::~concurrent_server() { this->shutdown(); }
 
@@ -29,7 +31,7 @@ concurrent_server::set_sleep(uint32_t sleep) {
 }
 
 uint32_t
-concurrent_server::get_sleep(void) {
+concurrent_server::get_sleep() {
 	return this->m_sleep;
 }
 
@@ -41,7 +43,7 @@ concurrent_server::set_threads(uint32_t threads) {
 }
 
 uint32_t
-concurrent_server::get_threads(void) {
+concurrent_server::get_threads() {
 	return this->m_threads;
 }
 
@@ -78,7 +80,7 @@ concurrent_server::start(u_short port) {
 }
 
 bool
-concurrent_server::process(void) {
+concurrent_server::process() {
 	if (this->m_threads > 0) {
 		return true;
 	}
@@ -105,7 +107,7 @@ concurrent_server::process(void) {
 }
 
 void
-concurrent_server::shutdown(void) {
+concurrent_server::shutdown() {
 	// join threads
 	this->m_threads_active = false;
 	for (size_t i = 0; i < this->m_threadpool.size(); i++) {

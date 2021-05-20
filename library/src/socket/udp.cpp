@@ -19,12 +19,12 @@ using namespace networkio::socket;
 // networkio::socket::udp_socket
 //----------------------------------------------------------------------------
 
-udp_socket::udp_socket(void) : socket() {}
+udp_socket::udp_socket() : socket() {}
 
 udp_socket::~udp_socket() { this->close(); }
 
 bool
-udp_socket::create_socket(void) {
+udp_socket::create_socket() {
 	if (this->m_sockfd != INVALID_SOCKET)
 		return false;
 
@@ -43,7 +43,7 @@ udp_socket::create_socket(void) {
 // networkio::socket::udp_server
 //----------------------------------------------------------------------------
 
-udp_server::udp_server(void) : udp_socket() {}
+udp_server::udp_server() : udp_socket() {}
 
 udp_server::~udp_server() { this->close(); }
 
@@ -96,7 +96,7 @@ udp_server::accept(struct sockaddr_in *addr) {
 }
 
 void
-udp_server::_recv(void) {
+udp_server::_recv() {
 	// since we use a static buffer we need to guard lock up here
 	std::lock_guard<std::mutex> lock(this->m_mutex);
 
@@ -151,7 +151,7 @@ udp_server::_recv(void) {
 // networkio::socket::udp_client
 //----------------------------------------------------------------------------
 
-udp_client::udp_client(void) : udp_socket() {}
+udp_client::udp_client() : udp_socket() {}
 
 udp_client::udp_client(udp_server *server, SOCKET sockfd, SOCKADDR_IN *addr) : udp_socket() {
 	this->m_sockfd = sockfd;
@@ -164,7 +164,8 @@ udp_client::udp_client(udp_server *server, SOCKET sockfd, SOCKADDR_IN *addr) : u
 udp_client::~udp_client() {
 	// udp client and server uses shared socket so we dont wanna hardclose it
 	if (this->m_should_recv) {
-		this->close();
+		this->m_connected = false;
+		socket::close();
 	}
 }
 
@@ -213,12 +214,12 @@ udp_client::connect(const std::string &addr) {
 }
 
 bool
-udp_client::is_connected(void) {
+udp_client::is_connected() {
 	return this->m_connected;
 }
 
 bool
-udp_client::close(void) {
+udp_client::close() {
 	this->m_connected = false;
 	return socket::close();
 }
