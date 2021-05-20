@@ -1,9 +1,9 @@
 
-#ifndef __HOST_INFO_H__
-#define __HOST_INFO_H__
+#ifndef HOST_INFO_H_
+#define HOST_INFO_H_
 
-#define HOST_CLIENT_CERT                                                                                               \
-	"-----BEGIN CERTIFICATE-----\
+#define HOST_CLIENT_CERT                                                       \
+  "-----BEGIN CERTIFICATE-----\
 MIIFazCCA1OgAwIBAgIUO8Ami3udQZohiW00/IrF9YKnpkswDQYJKoZIhvcNAQEL\
 BQAwRTELMAkGA1UEBhMCREUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM\
 GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yMDA3MjQyMTM4NDZaFw0yMDA4\
@@ -35,8 +35,8 @@ DqGkQpjZBQrpXHQpp1hBpAT+Meqnv1QnjF5t823VkKFw8tCbL1j1ZF/TS28cJ5iF\
 RGLuaxVJbjcdqljwZd+SuVx1ESWQYfSS+19BiBrGvSrfOn+Ot79MbThcoaX1zs4=\
 -----END CERTIFICATE-----"
 
-#define HOST_PRIVATE_KEY                                                                                               \
-	"-----BEGIN ENCRYPTED PRIVATE KEY-----\
+#define HOST_PRIVATE_KEY                                                       \
+  "-----BEGIN ENCRYPTED PRIVATE KEY-----\
 MIIJnDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIXrbb3Jboo88CAggA\
 MAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECCHUNy2HwjmfBIIJSCO5NESjZbjE\
 vX7CW6vbEfvM6dxgdd1VOQ5YOyccN1MPr6dTDJOsxeIxJLUjAmwkoO5IY5cggxdU\

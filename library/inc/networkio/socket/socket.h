@@ -1,6 +1,6 @@
 
-#ifndef __SOCKET_SOCKET_H__
-#define __SOCKET_SOCKET_H__
+#ifndef SOCKET_SOCKET_H_
+#define SOCKET_SOCKET_H_
 
 //----------------------------------------------------------------------------
 // Includes
@@ -56,28 +56,28 @@ int sockaddr_cmp(struct sockaddr *x, struct sockaddr *y);
 //----------------------------------------------------------------------------
 
 class socket : public virtual interfaces::socket {
-  public:
-	socket();
-	virtual ~socket();
+public:
+  socket();
+  virtual ~socket();
 
-  public:
-	SOCKET get_socket();
+public:
+  SOCKET get_socket();
 
-	int can_recv();
-	int can_send();
+  int can_recv();
+  int can_send();
 
-	virtual bool set_blocking(bool blocking) override;
-	virtual bool set_nopipe(bool nopipe) override;
+  virtual bool set_blocking(bool blocking) override;
+  virtual bool set_nopipe(bool nopipe) override;
 
-	virtual bool close() override;
+  virtual bool close() override;
 
-  protected:
-	int _flags();
+protected:
+  int _flags();
 
-  protected:
-	SOCKET m_sockfd = INVALID_SOCKET;
-	bool m_blocking = true;
-	bool m_nopipe = false;
+protected:
+  SOCKET m_sockfd = INVALID_SOCKET;
+  bool m_blocking = true;
+  bool m_nopipe = false;
 };
 
 } // namespace socket

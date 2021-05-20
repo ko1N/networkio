@@ -1,6 +1,6 @@
 ﻿
-#ifndef __TLS_CREDENTIALSMANAGER_H__
-#define __TLS_CREDENTIALSMANAGER_H__
+#ifndef TLS_CREDENTIALSMANAGER_H_
+#define TLS_CREDENTIALSMANAGER_H_
 #ifdef __WITH_BOTAN__
 
 //----------------------------------------------------------------------------
@@ -30,30 +30,35 @@ namespace tls {
 //----------------------------------------------------------------------------
 
 class credentials_manager : public Botan::Credentials_Manager {
-  public:
-	credentials_manager();
-	credentials_manager(const std::string &cert);
-	credentials_manager(const std::string &cert, Botan::RandomNumberGenerator &rng, const std::string &priv_key,
-						const std::string &priv_key_pwd);
+public:
+  credentials_manager();
+  credentials_manager(const std::string &cert);
+  credentials_manager(const std::string &cert,
+                      Botan::RandomNumberGenerator &rng,
+                      const std::string &priv_key,
+                      const std::string &priv_key_pwd);
 
-  public:
-	std::vector<Botan::Certificate_Store *> trusted_certificate_authorities(const std::string &type,
-																			const std::string &host) override;
+public:
+  std::vector<Botan::Certificate_Store *>
+  trusted_certificate_authorities(const std::string &type,
+                                  const std::string &host) override;
 
-	std::vector<Botan::X509_Certificate> cert_chain(const std::vector<std::string> &algos, const std::string &type,
-													const std::string &host) override;
+  std::vector<Botan::X509_Certificate>
+  cert_chain(const std::vector<std::string> &algos, const std::string &type,
+             const std::string &host) override;
 
-	Botan::Private_Key *private_key_for(const Botan::X509_Certificate &cert, const std::string &type,
-										const std::string &ctx) override;
+  Botan::Private_Key *private_key_for(const Botan::X509_Certificate &cert,
+                                      const std::string &type,
+                                      const std::string &ctx) override;
 
-  private:
-	struct certificate_info {
-		std::vector<Botan::X509_Certificate> certs;
-		std::shared_ptr<Botan::Private_Key> key;
-	};
+private:
+  struct certificate_info {
+    std::vector<Botan::X509_Certificate> certs;
+    std::shared_ptr<Botan::Private_Key> key;
+  };
 
-	std::vector<certificate_info> m_certs;
-	std::vector<std::shared_ptr<Botan::Certificate_Store>> m_cert_stores;
+  std::vector<certificate_info> m_certs;
+  std::vector<std::shared_ptr<Botan::Certificate_Store>> m_cert_stores;
 };
 
 } // namespace tls

@@ -16,62 +16,57 @@ using namespace networkio::http;
 // networkio::http::parser
 //----------------------------------------------------------------------------
 
-parser::parser() {}
+auto parser::header_from_string(const std::string &http) -> parser_status {
+  // seperate body from header
+  auto header_end = http.find("\r\n\r\n");
+  if (header_end == std::string::npos) {
+    // printf("http::parser::from_string(): unable to find http header end
+    // marker.\n");
+    return PARSE_ERROR_AGAIN;
+  }
 
-parser::~parser() {}
+  // TODO: is it efficient to copy the content here?
+  std::string header = http.substr(0, header_end);
+  this->m_body = http.substr(header_end + 4);
 
-parser_status
-parser::header_from_string(const std::string &http) {
-	// seperate body from header
-	auto header_end = http.find("\r\n\r\n");
-	if (header_end == std::string::npos) {
-		// printf("http::parser::from_string(): unable to find http header end marker.\n");
-		return PARSE_ERROR_AGAIN;
-	}
+  // parse header
+  auto header_lines = std::tokenize(header, "\r\n");
+  if (header_lines.empty()) {
+    printf("http::parser::from_string(): header only consists of 1 line.\n");
+    return PARSE_ERROR_AGAIN;
+  }
 
-	// TODO: is it efficient to copy the content here?
-	std::string header = http.substr(0, header_end);
-	this->m_body = http.substr(header_end + 4);
+  this->m_header = header_lines[0];
 
-	// parse header
-	auto header_lines = std::tokenize(header, "\r\n");
-	if (header_lines.empty()) {
-		printf("http::parser::from_string(): header only consists of 1 line.\n");
-		return PARSE_ERROR_AGAIN;
-	}
+  for (size_t i = 1; i < header_lines.size(); i++) {
+    auto &l = header_lines[i];
+    auto d = l.find(':');
+    if (d == std::string::npos) {
+      break; // something went wrong?
+    }
 
-	this->m_header = header_lines[0];
+    std::string key = l.substr(0, d);
+    std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+    std::string val = l.substr(d + 2);
+    this->m_header_fields[key] = val;
+  }
 
-	for (size_t i = 1; i < header_lines.size(); i++) {
-		auto &l = header_lines[i];
-		auto d = l.find(':');
-		if (d == std::string::npos) {
-			break; // something went wrong?
-		}
-
-		std::string key = l.substr(0, d);
-		std::transform(key.begin(), key.end(), key.begin(), ::tolower);
-		std::string val = l.substr(d + 2);
-		this->m_header_fields[key] = val;
-	}
-
-	return PARSE_SUCCESS;
+  return PARSE_SUCCESS;
 }
 
-std::string
-parser::header_to_string() const {
-	// header
-	std::string r = this->m_header + "\r\n";
+auto parser::header_to_string() const -> std::string {
+  // header
+  std::string r = this->m_header + "\r\n";
 
-	// header fields
-	for (auto &f : this->m_header_fields) {
-		r += f.first + ": " + f.second += "\r\n";
-	}
+  // header fields
+  for (const auto &f : this->m_header_fields) {
+    r += f.first + ": " + f.second += "\r\n";
+  }
 
-	r += "\r\n";
+  r += "\r\n";
 
-	// body
-	r += this->m_body;
+  // body
+  r += this->m_body;
 
-	return r;
+  return r;
 }

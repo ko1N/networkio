@@ -1,5 +1,5 @@
-#ifndef __MEMORY_USER_DATA_H__
-#define __MEMORY_USER_DATA_H__
+#ifndef MEMORY_USER_DATA_H_
+#define MEMORY_USER_DATA_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -20,8 +20,8 @@ namespace memory {
 
 class base_userdata {
 
-  public:
-	virtual ~base_userdata() {}
+public:
+  virtual ~base_userdata() {}
 };
 
 } // namespace memory

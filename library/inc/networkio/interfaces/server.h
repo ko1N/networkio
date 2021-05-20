@@ -1,6 +1,6 @@
 
-#ifndef __INTERFACE_SERVER_H__
-#define __INTERFACE_SERVER_H__
+#ifndef INTERFACE_SERVER_H_
+#define INTERFACE_SERVER_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -25,11 +25,12 @@ namespace interfaces {
 // this class unifies the server interface for tcp/udp/tls/dtls
 class server : public virtual socket {
 
-  public:
-	virtual ~server() {}
+public:
+  virtual ~server() {}
 
-	virtual bool bind(const u_short port) = 0;
-	virtual std::shared_ptr<client> accept(struct sockaddr_in *addr = nullptr) = 0;
+  virtual bool bind(const u_short port) = 0;
+  virtual std::shared_ptr<client>
+  accept(struct sockaddr_in *addr = nullptr) = 0;
 };
 
 } // namespace interfaces

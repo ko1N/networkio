@@ -1,6 +1,6 @@
 
-#ifndef __INTERFACE_CLIENT_H__
-#define __INTERFACE_CLIENT_H__
+#ifndef INTERFACE_CLIENT_H_
+#define INTERFACE_CLIENT_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -23,14 +23,14 @@ namespace interfaces {
 // this class unifies the client interface for tcp/udp/tls/dtls
 class client : public virtual socket {
 
-  public:
-	virtual ~client() {}
+public:
+  virtual ~client() {}
 
-	virtual bool connect(const std::string &addr) = 0;
-	virtual bool is_connected() = 0;
+  virtual bool connect(const std::string &addr) = 0;
+  virtual bool is_connected() = 0;
 
-	virtual int32_t read_raw(uint8_t *buf, int32_t len) = 0;
-	virtual int32_t write_raw(const uint8_t *buf, int32_t len) = 0;
+  virtual int32_t read_raw(uint8_t *buf, int32_t len) = 0;
+  virtual int32_t write_raw(const uint8_t *buf, int32_t len) = 0;
 };
 
 } // namespace interfaces

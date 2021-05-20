@@ -1,6 +1,6 @@
 
-#ifndef __MUX_CLIENT_H__
-#define __MUX_CLIENT_H__
+#ifndef MUX_CLIENT_H_
+#define MUX_CLIENT_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -40,11 +40,9 @@ enum class event_type { connect = 0, disconnect, reconnect };
 
 // this is clang specific...
 struct enum_hash {
-	template <typename T>
-	std::size_t
-	operator()(T t) const {
-		return static_cast<std::size_t>(t);
-	}
+  template <typename T> std::size_t operator()(T t) const {
+    return static_cast<std::size_t>(t);
+  }
 };
 
 //----------------------------------------------------------------------------
@@ -53,96 +51,99 @@ struct enum_hash {
 
 class client : public networkio::socket::tcp::concurrent_server_handler {
 
-	friend class server;
+  friend class server;
 
-  public:
-	using callback_t = std::function<void(client *, networkio::proto::packet *)>;
+public:
+  using callback_t = std::function<void(client *, networkio::proto::packet *)>;
 
-  public:
-	client();
-	client(std::shared_ptr<networkio::interfaces::client> cl);
-	~client();
+public:
+  client();
+  client(std::shared_ptr<networkio::interfaces::client> cl);
+  ~client();
 
-  public:
-	void set_auto_reconnect(int seconds);
-	int get_auto_reconnect();
+public:
+  void set_auto_reconnect(int seconds);
+  int get_auto_reconnect();
 
-	bool run(const std::string &address); // this starts the client in blocking mode and
-										  // processes all packets internally
+  bool
+  run(const std::string &address); // this starts the client in blocking mode
+                                   // and processes all packets internally
 
-	bool connect(const std::string &address); // this starts the client in non blocking mode
-	bool is_connected();
-	bool disconnect();
-	bool process(); // processes the server loop if using non blocking mode
+  bool connect(const std::string
+                   &address); // this starts the client in non blocking mode
+  bool is_connected();
+  bool disconnect();
+  bool process(); // processes the server loop if using non blocking mode
 
-	// event handlers
-	void event(event_type evt, std::function<void(client *)> &&func);
+  // event handlers
+  void event(event_type evt, std::function<void(client *)> &&func);
 
-	// simple endpoint communication
-	bool endpoint(const hash::hash32_t endpoint, const callback_t &&func);
-	bool call(const hash::hash32_t endpoint, const networkio::proto::packet *packet);
+  // simple endpoint communication
+  bool endpoint(const hash::hash32_t endpoint, const callback_t &&func);
+  bool call(const hash::hash32_t endpoint,
+            const networkio::proto::packet *packet);
 
-	// allocates a shared memory region and returns a pointer to it
-	template <typename T>
-	T *
-	sharepoint(const hash::hash32_t sharepoint) {
-		if (this->m_sharepoints[sharepoint] == nullptr) {
-			this->m_sharepoints[sharepoint].reset(new memory<T>());
-		}
+  // allocates a shared memory region and returns a pointer to it
+  template <typename T> T *sharepoint(const hash::hash32_t sharepoint) {
+    if (this->m_sharepoints[sharepoint] == nullptr) {
+      this->m_sharepoints[sharepoint].reset(new memory<T>());
+    }
 
-		return this->m_sharepoints[sharepoint]->base();
-	}
+    return this->m_sharepoints[sharepoint]->base();
+  }
 
-	// thread safe userdata
-	// TODO: refactor using constexpr - where iss the thread safety here?
-	template <typename T>
-	std::shared_ptr<T>
-	get_userdata(const std::string &userdata) {
-		if (this->m_userdata[userdata] == nullptr) {
-			this->m_userdata[userdata].reset(new T());
-		}
+  // thread safe userdata
+  // TODO: refactor using constexpr - where iss the thread safety here?
+  template <typename T>
+  std::shared_ptr<T> get_userdata(const std::string &userdata) {
+    if (this->m_userdata[userdata] == nullptr) {
+      this->m_userdata[userdata].reset(new T());
+    }
 
-		return std::static_pointer_cast<T>(this->m_userdata[userdata]);
-	}
+    return std::static_pointer_cast<T>(this->m_userdata[userdata]);
+  }
 
-	template <typename T>
-	std::shared_ptr<T>
-	get_userdata(const std::string &userdata, std::function<T *()> &&func) {
-		if (this->m_userdata[userdata] == nullptr) {
-			this->m_userdata[userdata].reset(func());
-		}
+  template <typename T>
+  std::shared_ptr<T> get_userdata(const std::string &userdata,
+                                  std::function<T *()> &&func) {
+    if (this->m_userdata[userdata] == nullptr) {
+      this->m_userdata[userdata].reset(func());
+    }
 
-		return std::static_pointer_cast<T>(this->m_userdata[userdata]);
-	}
+    return std::static_pointer_cast<T>(this->m_userdata[userdata]);
+  }
 
-  protected:
-	void handle_disconnect();
-	bool check_heartbeat();
+protected:
+  void handle_disconnect();
+  bool check_heartbeat();
 
-	// TODO: i dont think thats super neat here...
-	std::mutex &
-	mutex() {
-		return this->m_mutex;
-	}
+  // TODO: i dont think thats super neat here...
+  std::mutex &mutex() { return this->m_mutex; }
 
-  protected:
-	int m_auto_reconnect = 0;
+protected:
+  int m_auto_reconnect = 0;
 
-	std::shared_ptr<networkio::interfaces::client> m_client;
-	std::shared_ptr<networkio::proto::packet_proto> m_proto;
-	int m_connection_state = -1;
-	std::string m_server = "";
-	clock_t m_disconnect_time = clock();
+  std::shared_ptr<networkio::interfaces::client> m_client;
+  std::shared_ptr<networkio::proto::packet_proto> m_proto;
+  int m_connection_state = -1;
+  std::string m_server = "";
+  clock_t m_disconnect_time = clock();
 
-	std::mutex m_send_mutex;
-	timepoint_t m_sent_tp;
+  std::mutex m_send_mutex;
+  timepoint_t m_sent_tp;
 
-	std::unordered_map<event_type, std::function<void(client *)>, enum_hash> m_events;
-	std::unordered_map<hash::hash32_t, std::function<void(client *, networkio::proto::packet *)>> m_endpoints;
-	std::unordered_map<hash::hash32_t, std::shared_ptr<base_memory>> m_sharepoints;
+  std::unordered_map<event_type, std::function<void(client *)>, enum_hash>
+      m_events;
+  std::unordered_map<hash::hash32_t,
+                     std::function<void(client *, networkio::proto::packet *)>>
+      m_endpoints;
+  std::unordered_map<hash::hash32_t, std::shared_ptr<base_memory>>
+      m_sharepoints;
 
-	std::mutex m_mutex;
-	std::unordered_map<std::string, std::shared_ptr<networkio::memory::base_userdata>> m_userdata;
+  std::mutex m_mutex;
+  std::unordered_map<std::string,
+                     std::shared_ptr<networkio::memory::base_userdata>>
+      m_userdata;
 };
 
 } // namespace mux

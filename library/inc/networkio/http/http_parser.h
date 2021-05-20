@@ -1,5 +1,5 @@
-#ifndef __HTTP_PARSER_H__
-#define __HTTP_PARSER_H__
+#ifndef HTTP_PARSER_H_
+#define HTTP_PARSER_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -21,49 +21,36 @@ namespace http {
 1 finished
 */
 enum parser_status {
-	PARSE_SUCCESS = 0,	   // parse success
-	PARSE_ERROR = -1,	   // general parse error
-	PARSE_ERROR_AGAIN = -2 // not enough data provided
+  PARSE_SUCCESS = 0,     // parse success
+  PARSE_ERROR = -1,      // general parse error
+  PARSE_ERROR_AGAIN = -2 // not enough data provided
 };
 
 class parser {
-  public:
-	parser();
-	virtual ~parser();
+public:
+  parser() = default;
+  virtual ~parser() = default;
 
-	const std::string &
-	header() {
-		return this->m_header;
-	}
+  auto header() -> const std::string & { return this->m_header; }
 
-	virtual void
-	set_header(const std::string &s) {
-		this->m_header = s;
-	}
+  virtual void set_header(const std::string &s) { this->m_header = s; }
 
-	// lookups are not const
-	std::unordered_map<std::string, std::string> &
-	header_fields() {
-		return this->m_header_fields;
-	}
+  // lookups are not const
+  auto header_fields() -> std::unordered_map<std::string, std::string> & {
+    return this->m_header_fields;
+  }
 
-	const std::string &
-	body() {
-		return this->m_body;
-	}
+  auto body() -> const std::string & { return this->m_body; }
 
-	virtual void
-	set_body(const std::string &s) {
-		this->m_body = s;
-	}
+  virtual void set_body(const std::string &s) { this->m_body = s; }
 
-  protected:
-	parser_status header_from_string(const std::string &http);
-	std::string header_to_string() const;
+protected:
+  auto header_from_string(const std::string &http) -> parser_status;
+  auto header_to_string() const -> std::string;
 
-	std::string m_header;
-	std::unordered_map<std::string, std::string> m_header_fields;
-	std::string m_body;
+  std::string m_header;
+  std::unordered_map<std::string, std::string> m_header_fields;
+  std::string m_body;
 };
 
 } // namespace http

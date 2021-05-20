@@ -1,6 +1,6 @@
 
-#ifndef __INTERFACE_SOCKET_H__
-#define __INTERFACE_SOCKET_H__
+#ifndef INTERFACE_SOCKET_H_
+#define INTERFACE_SOCKET_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -22,18 +22,18 @@ namespace interfaces {
 // this class unifies the socket interface for tcp/udp/tls/dtls
 class socket {
 
-  public:
-	virtual ~socket() {}
+public:
+  virtual ~socket() {}
 
-	virtual bool is_stream() = 0;
+  virtual bool is_stream() = 0;
 
-	// TODO: do we really need this as a virtual?
-	virtual bool create_socket() = 0;
+  // TODO: do we really need this as a virtual?
+  virtual bool create_socket() = 0;
 
-	virtual bool set_blocking(bool blocking) = 0;
-	virtual bool set_nopipe(bool nopipe) = 0;
+  virtual bool set_blocking(bool blocking) = 0;
+  virtual bool set_nopipe(bool nopipe) = 0;
 
-	virtual bool close() = 0;
+  virtual bool close() = 0;
 };
 
 } // namespace interfaces

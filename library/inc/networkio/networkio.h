@@ -1,6 +1,6 @@
 
-#ifndef __NETWORKIO_H__
-#define __NETWORKIO_H__
+#ifndef NETWORKIO_H_
+#define NETWORKIO_H_
 
 #include <networkio/memory/fifo_buffer.h>
 #include <networkio/memory/ring_buffer.h>

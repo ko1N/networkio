@@ -36,8 +36,8 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/out_dirs.cmake)
 set(CMAKE_CXX_CLANG_TIDY
     clang-tidy;
     -header-filter=.;
-    #-checks=readability-*,,,modernize-*;)
-    -checks=clang-analyzer-*,portability-*,performance-*,cppcoreguidelines-*;)
+    #-checks=,,,cppcoreguidelines-*,modernize-*,readability-*,hicpp,google,cert,bugprone,abseil,misc,llvm,mpi;)
+    -checks=clang-analyzer-*,portability-*,performance-*,portability-*,bugprone-*;)
 
 # dependencies
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/deps.cmake)

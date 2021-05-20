@@ -1,6 +1,6 @@
 
-#ifndef __MUX_SERVER_H__
-#define __MUX_SERVER_H__
+#ifndef MUX_SERVER_H_
+#define MUX_SERVER_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -39,55 +39,51 @@ namespace mux {
 
 class server : public networkio::socket::tcp::concurrent_server {
 
-  public:
-	using callback_t = std::function<void(client *, networkio::proto::packet *)>;
+public:
+  using callback_t = std::function<void(client *, networkio::proto::packet *)>;
 
-  public:
-	server();
-	server(std::shared_ptr<networkio::interfaces::server> sv);
-	~server();
+public:
+  server();
+  server(std::shared_ptr<networkio::interfaces::server> sv);
+  ~server();
 
-  public:
-	// event handlers
-	void event(event_type evt, std::function<void(client *)> &&func);
+public:
+  // event handlers
+  void event(event_type evt, std::function<void(client *)> &&func);
 
-	// simple endpoint communication
-	bool endpoint(const hash::hash32_t endpoint, const callback_t &&func);
+  // simple endpoint communication
+  bool endpoint(const hash::hash32_t endpoint, const callback_t &&func);
 
-	// allocates a shared memory region and returns a pointer to it
-	template <typename T>
-	T *
-	sharepoint(const hash::hash32_t sharepoint) {
-		if (this->m_sharepoints[sharepoint] == nullptr) {
-			this->m_sharepoints[sharepoint] = new memory<T>();
-		}
+  // allocates a shared memory region and returns a pointer to it
+  template <typename T> T *sharepoint(const hash::hash32_t sharepoint) {
+    if (this->m_sharepoints[sharepoint] == nullptr) {
+      this->m_sharepoints[sharepoint] = new memory<T>();
+    }
 
-		return (T *)this->m_sharepoints[sharepoint]->base();
-	}
+    return (T *)this->m_sharepoints[sharepoint]->base();
+  }
 
-	// client handlers
-	inline void
-	clients_lock() {
-		this->m_client_mutex.lock();
-	}
-	inline void
-	clients_unlock() {
-		this->m_client_mutex.unlock();
-	}
-	std::list<std::shared_ptr<networkio::socket::tcp::concurrent_server_handler>> &
-	get_clients() {
-		return this->m_clients;
-	}
+  // client handlers
+  inline void clients_lock() { this->m_client_mutex.lock(); }
+  inline void clients_unlock() { this->m_client_mutex.unlock(); }
+  std::list<std::shared_ptr<networkio::socket::tcp::concurrent_server_handler>>
+      &get_clients() {
+    return this->m_clients;
+  }
 
-  protected:
-	virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> accept_client() override;
-	virtual bool process_client(std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> cl) override;
+protected:
+  virtual std::shared_ptr<networkio::socket::tcp::concurrent_server_handler>
+  accept_client() override;
+  virtual bool process_client(
+      std::shared_ptr<networkio::socket::tcp::concurrent_server_handler> cl)
+      override;
 
-  protected:
-	std::mutex m_endpoints_mutex;
-	std::unordered_map<event_type, std::function<void(client *)>, enum_hash> m_events;
-	std::unordered_map<hash::hash32_t, callback_t> m_endpoints;
-	std::unordered_map<hash::hash32_t, base_memory *> m_sharepoints;
+protected:
+  std::mutex m_endpoints_mutex;
+  std::unordered_map<event_type, std::function<void(client *)>, enum_hash>
+      m_events;
+  std::unordered_map<hash::hash32_t, callback_t> m_endpoints;
+  std::unordered_map<hash::hash32_t, base_memory *> m_sharepoints;
 };
 
 } // namespace mux

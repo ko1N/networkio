@@ -1,6 +1,6 @@
 
-#ifndef __PROTO_STRING_PROTO_H__
-#define __PROTO_STRING_PROTO_H__
+#ifndef PROTO_STRING_PROTO_H_
+#define PROTO_STRING_PROTO_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -26,20 +26,20 @@ namespace proto {
 
 class string_proto : public virtual interfaces::proto {
 
-  public:
-	string_proto(std::shared_ptr<networkio::interfaces::client> client);
-	virtual ~string_proto();
+public:
+  string_proto(std::shared_ptr<networkio::interfaces::client> client);
+  virtual ~string_proto();
 
-  public:
-	std::string read_string();
-	bool write_string(const std::string &p);
+public:
+  std::string read_string();
+  bool write_string(const std::string &p);
 
-	virtual bool process() override;
+  virtual bool process() override;
 
-  protected:
-	std::shared_ptr<networkio::interfaces::client> m_client;
+protected:
+  std::shared_ptr<networkio::interfaces::client> m_client;
 
-	std::string m_out_string = "";
+  std::string m_out_string = "";
 };
 
 } // namespace proto

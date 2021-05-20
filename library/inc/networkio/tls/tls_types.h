@@ -1,6 +1,6 @@
 ﻿
-#ifndef __TLS_TYPES_H__
-#define __TLS_TYPES_H__
+#ifndef TLS_TYPES_H_
+#define TLS_TYPES_H_
 #ifdef __WITH_BOTAN__
 
 //----------------------------------------------------------------------------

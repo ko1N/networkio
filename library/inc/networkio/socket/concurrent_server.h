@@ -1,6 +1,6 @@
 
-#ifndef __TCP_CONCURRENT_SERVER_H__
-#define __TCP_CONCURRENT_SERVER_H__
+#ifndef TCP_CONCURRENT_SERVER_H_
+#define TCP_CONCURRENT_SERVER_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -36,11 +36,11 @@ namespace tcp {
 
 class concurrent_server_handler {
 
-  public:
-	virtual ~concurrent_server_handler() {}
+public:
+  virtual ~concurrent_server_handler() {}
 
-  public:
-	virtual bool process() = 0;
+public:
+  virtual bool process() = 0;
 };
 
 //----------------------------------------------------------------------------
@@ -49,52 +49,53 @@ class concurrent_server_handler {
 
 class concurrent_server {
 
-  public:
-	concurrent_server();
-	concurrent_server(std::shared_ptr<networkio::interfaces::server> sv);
-	virtual ~concurrent_server();
+public:
+  concurrent_server();
+  concurrent_server(std::shared_ptr<networkio::interfaces::server> sv);
+  virtual ~concurrent_server();
 
-  public:
-	// configuration
-	bool set_sleep(uint32_t sleep);
-	uint32_t get_sleep();
-	bool set_threads(uint32_t threads);
-	uint32_t get_threads();
+public:
+  // configuration
+  bool set_sleep(uint32_t sleep);
+  uint32_t get_sleep();
+  bool set_threads(uint32_t threads);
+  uint32_t get_threads();
 
-	// this starts the server in blocking mode and processes all packets
-	// internally
-	bool run(u_short port);
+  // this starts the server in blocking mode and processes all packets
+  // internally
+  bool run(u_short port);
 
-	// this starts the server in non blocking mode
-	bool start(u_short port);
+  // this starts the server in non blocking mode
+  bool start(u_short port);
 
-	// processes the server loop if using non blocking mode
-	bool process();
+  // processes the server loop if using non blocking mode
+  bool process();
 
-	// client accessing
+  // client accessing
 
-	// shutdown the server and all associated threads
-	void shutdown();
+  // shutdown the server and all associated threads
+  void shutdown();
 
-  protected:
-	virtual std::shared_ptr<concurrent_server_handler> accept_client() = 0;
-	virtual bool process_client(std::shared_ptr<concurrent_server_handler> cl) = 0;
-	static void worker(concurrent_server *sv);
+protected:
+  virtual std::shared_ptr<concurrent_server_handler> accept_client() = 0;
+  virtual bool
+  process_client(std::shared_ptr<concurrent_server_handler> cl) = 0;
+  static void worker(concurrent_server *sv);
 
-  protected:
-	// 0 sleep will disable sleeping in the process loop
-	uint32_t m_sleep = 0;
+protected:
+  // 0 sleep will disable sleeping in the process loop
+  uint32_t m_sleep = 0;
 
-	// 0 lets it run on main thread, 1 lets it create 1 worker thread
-	uint32_t m_threads = 0;
+  // 0 lets it run on main thread, 1 lets it create 1 worker thread
+  uint32_t m_threads = 0;
 
-	std::shared_ptr<networkio::interfaces::server> m_server;
+  std::shared_ptr<networkio::interfaces::server> m_server;
 
-	std::mutex m_client_mutex;
-	std::list<std::shared_ptr<concurrent_server_handler>> m_clients;
+  std::mutex m_client_mutex;
+  std::list<std::shared_ptr<concurrent_server_handler>> m_clients;
 
-	std::atomic<bool> m_threads_active;
-	std::vector<std::thread> m_threadpool;
+  std::atomic<bool> m_threads_active;
+  std::vector<std::thread> m_threadpool;
 };
 
 } // namespace tcp

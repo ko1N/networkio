@@ -1,6 +1,6 @@
 ﻿
-#ifndef __BOTAN_H__
-#define __BOTAN_H__
+#ifndef BOTAN_H_
+#define BOTAN_H_
 
 #if defined(_WIN32)
 #pragma warning(disable : 4251)

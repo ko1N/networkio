@@ -1,6 +1,6 @@
 
-#ifndef __SOCKET_TCP_H__
-#define __SOCKET_TCP_H__
+#ifndef SOCKET_TCP_H_
+#define SOCKET_TCP_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -27,16 +27,13 @@ namespace socket {
 
 class tcp_socket : public socket {
 
-  public:
-	tcp_socket();
-	virtual ~tcp_socket();
+public:
+  tcp_socket();
+  virtual ~tcp_socket();
 
-  public:
-	virtual bool
-	is_stream() override {
-		return true;
-	}
-	virtual bool create_socket() override;
+public:
+  virtual bool is_stream() override { return true; }
+  virtual bool create_socket() override;
 };
 
 //----------------------------------------------------------------------------
@@ -45,13 +42,14 @@ class tcp_socket : public socket {
 
 class tcp_server : public tcp_socket, public virtual interfaces::server {
 
-  public:
-	tcp_server();
-	virtual ~tcp_server();
+public:
+  tcp_server();
+  virtual ~tcp_server();
 
-  public:
-	virtual bool bind(u_short uPort) override;
-	virtual std::shared_ptr<interfaces::client> accept(struct sockaddr_in *addr = nullptr) override;
+public:
+  virtual bool bind(u_short uPort) override;
+  virtual std::shared_ptr<interfaces::client>
+  accept(struct sockaddr_in *addr = nullptr) override;
 };
 
 //----------------------------------------------------------------------------
@@ -60,26 +58,26 @@ class tcp_server : public tcp_socket, public virtual interfaces::server {
 
 class tcp_client : public tcp_socket, public virtual interfaces::client {
 
-	friend class tcp_server;
+  friend class tcp_server;
 
-  public:
-	tcp_client();
-	virtual ~tcp_client();
+public:
+  tcp_client();
+  virtual ~tcp_client();
 
-  public:
-	auto connect(const std::string &addr) -> bool override;
-	auto is_connected() -> bool override;
-	auto close() -> bool override;
+public:
+  auto connect(const std::string &addr) -> bool override;
+  auto is_connected() -> bool override;
+  auto close() -> bool override;
 
-  protected:
-	bool write_raw_blocked(const uint8_t *buf, int32_t len);
+protected:
+  bool write_raw_blocked(const uint8_t *buf, int32_t len);
 
-  public:
-	virtual int32_t read_raw(uint8_t *buf, int32_t len) override;
-	auto write_raw(const uint8_t *buf, int32_t len) -> int32_t override;
+public:
+  virtual int32_t read_raw(uint8_t *buf, int32_t len) override;
+  auto write_raw(const uint8_t *buf, int32_t len) -> int32_t override;
 
-  protected:
-	bool m_connected = false;
+protected:
+  bool m_connected = false;
 };
 
 } // namespace socket

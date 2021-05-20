@@ -1,6 +1,6 @@
 
-#ifndef __INTERFACE_PROTO_H__
-#define __INTERFACE_PROTO_H__
+#ifndef INTERFACE_PROTO_H_
+#define INTERFACE_PROTO_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -21,10 +21,10 @@ namespace interfaces {
 
 class proto {
 
-  public:
-	virtual ~proto() {}
+public:
+  virtual ~proto() {}
 
-	virtual bool process() = 0;
+  virtual bool process() = 0;
 };
 
 } // namespace interfaces

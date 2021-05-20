@@ -1,6 +1,6 @@
 
-#ifndef __POSIX_H__
-#define __POSIX_H__
+#ifndef POSIX_H_
+#define POSIX_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -12,12 +12,10 @@
 // namespace
 //----------------------------------------------------------------------------
 
-namespace networkio {
-namespace posix {
+namespace networkio::posix {
 
-bool gethostbyname_safe(const std::string &addr, SOCKADDR_IN &out_addr);
+auto gethostbyname_safe(const std::string &addr, SOCKADDR_IN &out_addr) -> bool;
 
-} // namespace posix
-} // namespace networkio
+} // namespace networkio::posix
 
 #endif

@@ -1,6 +1,6 @@
 
-#ifndef __SOCKET_UDP_H__
-#define __SOCKET_UDP_H__
+#ifndef SOCKET_UDP_H_
+#define SOCKET_UDP_H_
 
 //----------------------------------------------------------------------------
 // includes
@@ -29,16 +29,13 @@ namespace socket {
 
 class udp_socket : public socket {
 
-  public:
-	udp_socket();
-	virtual ~udp_socket();
+public:
+  udp_socket();
+  virtual ~udp_socket();
 
-  public:
-	virtual bool
-	is_stream() override {
-		return false;
-	}
-	virtual bool create_socket() override;
+public:
+  virtual bool is_stream() override { return false; }
+  virtual bool create_socket() override;
 };
 
 //----------------------------------------------------------------------------
@@ -48,23 +45,24 @@ class udp_socket : public socket {
 class udp_client;
 class udp_server : public udp_socket, public virtual interfaces::server {
 
-  public:
-	udp_server();
-	virtual ~udp_server();
+public:
+  udp_server();
+  virtual ~udp_server();
 
-  public:
-	virtual bool bind(u_short port) override;
-	virtual std::shared_ptr<interfaces::client> accept(struct sockaddr_in *addr = nullptr) override;
+public:
+  virtual bool bind(u_short port) override;
+  virtual std::shared_ptr<interfaces::client>
+  accept(struct sockaddr_in *addr = nullptr) override;
 
-  public:
-	void _recv();
+public:
+  void _recv();
 
-  protected:
-	// TODO: implementing a unordered map with custom hashing would be p
-	std::mutex m_mutex;
-	using client_t = std::pair<sockaddr_in, std::shared_ptr<udp_client>>;
-	std::vector<client_t> m_clients;
-	std::deque<client_t> m_new_clients;
+protected:
+  // TODO: implementing a unordered map with custom hashing would be p
+  std::mutex m_mutex;
+  using client_t = std::pair<sockaddr_in, std::shared_ptr<udp_client>>;
+  std::vector<client_t> m_clients;
+  std::deque<client_t> m_new_clients;
 };
 
 //----------------------------------------------------------------------------
@@ -73,33 +71,33 @@ class udp_server : public udp_socket, public virtual interfaces::server {
 
 class udp_client : public udp_socket, public virtual interfaces::client {
 
-	friend class udp_server;
+  friend class udp_server;
 
-  public:
-	udp_client();
-	udp_client(udp_server *server, SOCKET sockfd, SOCKADDR_IN *addr);
-	virtual ~udp_client();
+public:
+  udp_client();
+  udp_client(udp_server *server, SOCKET sockfd, SOCKADDR_IN *addr);
+  virtual ~udp_client();
 
-  public:
-	virtual bool connect(const std::string &addr) override;
-	virtual bool is_connected() override;
-	virtual bool close() override;
+public:
+  virtual bool connect(const std::string &addr) override;
+  virtual bool is_connected() override;
+  virtual bool close() override;
 
-  public:
-	virtual int32_t read_raw(uint8_t *buf, int32_t size) override;
-	virtual int32_t write_raw(const uint8_t *buf, int32_t size) override;
+public:
+  virtual int32_t read_raw(uint8_t *buf, int32_t size) override;
+  virtual int32_t write_raw(const uint8_t *buf, int32_t size) override;
 
-  protected:
-	void _recv(const uint8_t *buf, int32_t size);
+protected:
+  void _recv(const uint8_t *buf, int32_t size);
 
-  protected:
-	// connet
-	SOCKADDR_IN m_addr;
-	bool m_connected = false;
-	udp_server *m_server = nullptr;
-	bool m_should_recv = true;
+protected:
+  // connet
+  SOCKADDR_IN m_addr;
+  bool m_connected = false;
+  udp_server *m_server = nullptr;
+  bool m_should_recv = true;
 
-	networkio::memory::fifo_buffer m_buffer;
+  networkio::memory::fifo_buffer m_buffer;
 };
 
 } // namespace socket

@@ -1,6 +1,6 @@
 
-#ifndef __TYPES_H__
-#define __TYPES_H__
+#ifndef TYPES_H_
+#define TYPES_H_
 
 #ifdef _WIN32
 
@@ -8,7 +8,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define NOMINMAX
 
-#define __STDC_FORMAT_MACROS
+#define STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #include <errno.h>
@@ -24,10 +24,7 @@
 #include <ws2tcpip.h>
 
 namespace networkio {
-inline void
-sleep(unsigned int s) {
-	Sleep(s);
-}
+inline void sleep(unsigned int s) { Sleep(s); }
 } // namespace networkio
 
 #define ETHER_ADDR_LEN 6
@@ -35,9 +32,9 @@ sleep(unsigned int s) {
 
 #pragma pack(push, 1)
 typedef struct ether_header {
-	uint8_t ether_dhost[ETHER_ADDR_LEN];
-	uint8_t ether_shost[ETHER_ADDR_LEN];
-	uint16_t ether_type;
+  uint8_t ether_dhost[ETHER_ADDR_LEN];
+  uint8_t ether_shost[ETHER_ADDR_LEN];
+  uint16_t ether_type;
 } ETHERHDR;
 #pragma pack(pop)
 
@@ -67,23 +64,19 @@ typedef struct ether_header {
 #include <unistd.h>
 
 namespace networkio {
-inline void
-sleep(unsigned int s) {
-	usleep(1000 * s);
-}
+inline void sleep(unsigned int s) { usleep(1000 * s); }
 } // namespace networkio
 
 #define DWORD unsigned long
 #define PBYTE unsigned char *
 
-inline DWORD
-GetTickCount() {
-	struct timespec sTimeSpec;
-	unsigned long ulTick = 0U;
-	clock_gettime(CLOCK_REALTIME, &sTimeSpec);
-	ulTick = sTimeSpec.tv_nsec / 1000000;
-	ulTick += sTimeSpec.tv_sec * 1000;
-	return ulTick;
+inline DWORD GetTickCount() {
+  struct timespec sTimeSpec;
+  unsigned long ulTick = 0U;
+  clock_gettime(CLOCK_REALTIME, &sTimeSpec);
+  ulTick = sTimeSpec.tv_nsec / 1000000;
+  ulTick += sTimeSpec.tv_sec * 1000;
+  return ulTick;
 }
 
 #define IPPROTO int
@@ -98,15 +91,15 @@ GetTickCount() {
 
 #elif __linux__
 
-#include <errno.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <memory>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <arpa/inet.h>
-#include <errno.h>
+#include <cerrno>
+#include <ctime>
 #include <fcntl.h>
 #include <net/ethernet.h>
 #include <netdb.h>
@@ -117,34 +110,29 @@ GetTickCount() {
 #include <sys/times.h>
 #include <sys/un.h>
 #include <termios.h>
-#include <time.h>
 #include <unistd.h>
 
 namespace networkio {
-inline void
-sleep(unsigned int s) {
-	usleep(1000 * s);
-}
+inline void sleep(unsigned int s) { usleep(1000 * s); }
 } // namespace networkio
 
 #define DWORD unsigned long
 #define PBYTE unsigned char *
 
-inline DWORD
-GetTickCount() {
-	struct timespec sTimeSpec;
-	unsigned long ulTick = 0U;
-	clock_gettime(CLOCK_REALTIME, &sTimeSpec);
-	ulTick = sTimeSpec.tv_nsec / 1000000;
-	ulTick += sTimeSpec.tv_sec * 1000;
-	return ulTick;
+inline DWORD GetTickCount() {
+  struct timespec sTimeSpec;
+  unsigned long ulTick = 0U;
+  clock_gettime(CLOCK_REALTIME, &sTimeSpec);
+  ulTick = sTimeSpec.tv_nsec / 1000000;
+  ulTick += sTimeSpec.tv_sec * 1000;
+  return ulTick;
 }
 
 #define IPPROTO int
 
 #define SOCKET int
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
+#define INVALID_SOCKET (-1)
+#define SOCKET_ERROR (-1)
 
 #define SOCKADDR_IN struct sockaddr_in
 #define SOCKADDR struct sockaddr
